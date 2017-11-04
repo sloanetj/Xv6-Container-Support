@@ -5,14 +5,16 @@
 #include "stat.h"
 #include "user.h"
 
-#define N  1000
+#define N 1000
 
-void printf(int fd, char *s, ...)
+void
+printf(int fd, char *s, ...)
 {
 	write(fd, s, strlen(s));
 }
 
-void forktest(void)
+void
+forktest(void)
 {
 	int n, pid;
 
@@ -20,10 +22,8 @@ void forktest(void)
 
 	for (n = 0; n < N; n++) {
 		pid = fork();
-		if (pid < 0)
-			break;
-		if (pid == 0)
-			exit();
+		if (pid < 0) break;
+		if (pid == 0) exit();
 	}
 
 	if (n == N) {
@@ -46,7 +46,8 @@ void forktest(void)
 	printf(1, "fork test OK\n");
 }
 
-int main(void)
+int
+main(void)
 {
 	forktest();
 	exit();

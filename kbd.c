@@ -3,17 +3,15 @@
 #include "defs.h"
 #include "kbd.h"
 
-int kbdgetc(void)
+int
+kbdgetc(void)
 {
-	static uint shift;
-	static uchar *charcode[4] = {
-		normalmap, shiftmap, ctlmap, ctlmap
-	};
-	uint st, data, c;
+	static uint   shift;
+	static uchar *charcode[4] = {normalmap, shiftmap, ctlmap, ctlmap};
+	uint          st, data, c;
 
 	st = inb(KBSTATP);
-	if ((st & KBS_DIB) == 0)
-		return -1;
+	if ((st & KBS_DIB) == 0) return -1;
 	data = inb(KBDATAP);
 
 	if (data == 0xE0) {
@@ -42,7 +40,8 @@ int kbdgetc(void)
 	return c;
 }
 
-void kbdintr(void)
+void
+kbdintr(void)
 {
 	consoleintr(kbdgetc);
 }

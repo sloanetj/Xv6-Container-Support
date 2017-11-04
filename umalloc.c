@@ -11,24 +11,24 @@ typedef long Align;
 union header {
 	struct {
 		union header *ptr;
-		uint size;
+		uint          size;
 	} s;
 	Align x;
 };
 
 typedef union header Header;
 
-static Header base;
+static Header  base;
 static Header *freep;
 
-void free(void *ap)
+void
+free(void *ap)
 {
 	Header *bp, *p;
 
-	bp = (Header *) ap - 1;
+	bp = (Header *)ap - 1;
 	for (p = freep; !(bp > p && bp < p->s.ptr); p = p->s.ptr)
-		if (p >= p->s.ptr && (bp > p || bp < p->s.ptr))
-			break;
+		if (p >= p->s.ptr && (bp > p || bp < p->s.ptr)) break;
 	if (bp + bp->s.size == p->s.ptr) {
 		bp->s.size += p->s.ptr->s.size;
 		bp->s.ptr = p->s.ptr->s.ptr;
@@ -42,31 +42,31 @@ void free(void *ap)
 	freep = p;
 }
 
-static Header *morecore(uint nu)
+static Header *
+morecore(uint nu)
 {
-	char *p;
+	char *  p;
 	Header *hp;
 
-	if (nu < 4096)
-		nu = 4096;
+	if (nu < 4096) nu = 4096;
 	p = sbrk(nu * sizeof(Header));
-	if (p == (char *)-1)
-		return 0;
-	hp = (Header *) p;
+	if (p == (char *)-1) return 0;
+	hp         = (Header *)p;
 	hp->s.size = nu;
 	free((void *)(hp + 1));
 	return freep;
 }
 
-void *malloc(uint nbytes)
+void *
+malloc(uint nbytes)
 {
 	Header *p, *prevp;
-	uint nunits;
+	uint    nunits;
 
 	nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1;
 	if ((prevp = freep) == 0) {
 		base.s.ptr = freep = prevp = &base;
-		base.s.size = 0;
+		base.s.size                = 0;
 	}
 	for (p = prevp->s.ptr;; prevp = p, p = p->s.ptr) {
 		if (p->s.size >= nunits) {
@@ -81,7 +81,6 @@ void *malloc(uint nbytes)
 			return (void *)(p + 1);
 		}
 		if (p == freep)
-			if ((p = morecore(nunits)) == 0)
-				return 0;
+			if ((p = morecore(nunits)) == 0) return 0;
 	}
 }
