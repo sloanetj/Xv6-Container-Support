@@ -85,3 +85,38 @@ sys_uptime(void)
 	release(&tickslock);
 	return xticks;
 }
+
+
+/* Iterate throught the global array of mutexes.
+find the index of the first 'empty mutex' 
+(mutex is available), set mutex fields, return 
+index or -1 if full */
+int 
+sys_mcreate(char *name){
+
+	argptr(0, (void*)&name, sizeof(*name));
+	int i;
+
+	for (i=0; i<MUX_MAXNUM; i++){
+		if (MUTEXES[i].name == 0){
+			MUTEXES[i].name = name;
+			MUTEXES[i].state = 0;
+			return i;
+		}
+	}
+	return -1;
+}
+
+int
+sys_mdelete(int muxid){
+	return -1;
+}
+int
+sys_mlock(int muxid){
+	return -1;
+}
+int
+sys_munlock(int muxid){
+	return -1;
+}
+

@@ -70,6 +70,8 @@ myproc(void)
 // If found, change state to EMBRYO and initialize
 // state required to run in the kernel.
 // Otherwise return 0.
+
+// MODIFIED TO INITIALIZE THE MUTEX-REFERENCE TABLE TO NULL
 static struct proc *
 allocproc(void)
 {
@@ -111,11 +113,21 @@ found:
 	memset(p->context, 0, sizeof *p->context);
 	p->context->eip = (uint)forkret;
 
+
+	// initialize the mutex-reference table to null
+	int i;
+	for (i=0; i<MUX_MAXNUM; i++){
+		p->muxes[i] = 0;
+	}
+
+
 	return p;
 }
 
 // PAGEBREAK: 32
 // Set up first user process.
+
+// MODIFIED TO INITIALIZE GLOBAL MUTEX TABLE TO EMPTY MUTEXES
 void
 userinit(void)
 {
@@ -149,6 +161,13 @@ userinit(void)
 	p->state = RUNNABLE;
 
 	release(&ptable.lock);
+
+	// initialize global mutex table to empty mutexes
+	int i;
+	for(i=0; i<MUX_MAXNUM; i++){
+		MUTEXES[i].name = 0;
+		MUTEXES[i].state = -1;
+	}
 }
 
 // Grow current process's memory by n bytes.

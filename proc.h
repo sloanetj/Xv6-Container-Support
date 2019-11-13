@@ -1,3 +1,17 @@
+#include "mutex.h"
+
+/* mutex contains the name given at creation, and the state of the mutex: 
+1 if taken, 0 if not taken */
+struct mutex {
+	char *name;
+	int state;
+};
+
+/* global array contains all the mutexes
+indexed by the mutex id returned at creation */
+struct mutex MUTEXES[MUX_MAXNUM];
+
+
 // Per-CPU state
 struct cpu {
 	uchar            apicid;     // Local APIC ID
@@ -43,6 +57,7 @@ enum procstate
 };
 
 // Per-process state
+// MODIFIED TO INCLUDE MUTEX-REFERECNE TABLE
 struct proc {
 	uint              sz;            // Size of process memory (bytes)
 	pde_t *           pgdir;         // Page table
@@ -57,6 +72,16 @@ struct proc {
 	struct file *     ofile[NOFILE]; // Open files
 	struct inode *    cwd;           // Current directory
 	char              name[16];      // Process name (debugging)
+
+
+	/* array indexed by mutex id. If the process has access to a 
+	particular mutex, the pointer at a the corresponding index
+	points to the mutex in the global array. If the process does 
+	not have access, the corresponding pointer in the array is 
+	0 (null). */
+	struct mutex *	  muxes[MUX_MAXNUM];	
+
+
 };
 
 // Process memory is laid out contiguously, low addresses first:
