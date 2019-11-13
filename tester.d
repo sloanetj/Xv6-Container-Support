@@ -1,4 +1,4 @@
-tester.o: tester.c /usr/include/stdc-predef.h types.h user.h \
+tester.o: tester.c /usr/include/stdc-predef.h types.h spinlock.h user.h \
  /usr/include/printf.h /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h \

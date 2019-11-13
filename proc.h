@@ -1,8 +1,10 @@
 #include "mutex.h"
 
-/* mutex contains the name given at creation, and the state of the mutex: 
-1 if taken, 0 if not taken */
+/* mutex contains the name given at creation, the state of the mutex: 
+1 if taken, 0 if not taken, and a lock for atomic read/writes */
 struct mutex {
+	struct spinlock lock; 
+
 	char *name;
 	int state;
 };

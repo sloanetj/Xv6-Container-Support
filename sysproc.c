@@ -111,12 +111,18 @@ int
 sys_mdelete(int muxid){
 	return -1;
 }
+
+
 int
 sys_mlock(int muxid){
+
+
 	return -1;
 }
 int
 sys_munlock(int muxid){
+
+	
 	return -1;
 }
 
