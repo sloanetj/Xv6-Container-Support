@@ -89,40 +89,123 @@ sys_uptime(void)
 
 /* Iterate throught the global array of mutexes.
 find the index of the first 'empty mutex' 
-(mutex is available), set mutex fields, return 
-index or -1 if full */
+(mutex is available), set mutex fields, initialize 
+this process's reference to the mutex, return 
+index/mutexid or -1 if full */
 int 
 sys_mcreate(char *name){
 
-	argptr(0, (void*)&name, sizeof(*name));
+	argptr(0,(void*)&name,sizeof(*name));
+	struct proc *p = myproc();
 	int i;
 
+	acquire(&MUTEXES.lock);
 	for (i=0; i<MUX_MAXNUM; i++){
-		if (MUTEXES[i].name == 0){
-			MUTEXES[i].name = name;
-			MUTEXES[i].state = 0;
+		if (MUTEXES.muxes[i].name == 0){
+			// set mutex fields
+			MUTEXES.muxes[i].name = name;
+			MUTEXES.muxes[i].state = 0;
+
+			// initialize process reference
+			p->mux_ptrs[i] = &MUTEXES.muxes[i];
+
+			release(&MUTEXES.lock);
 			return i;
 		}
 	}
+	release(&MUTEXES.lock);
 	return -1;
 }
 
-int
+void
 sys_mdelete(int muxid){
-	return -1;
+	
 }
 
 
 int
 sys_mlock(int muxid){
 
+	argint(0,(int*)&muxid);
+	struct proc *p = myproc();
+	int i;
 
-	return -1;
+	// verify this process has access to this mutex
+	if (p->mux_ptrs[muxid] == 0){
+		return 0;
+	}
+
+	acquire(&MUTEXES.lock);
+	while (p->mux_ptrs[muxid]->state == 1){ // lock taken, block waiting for your turn
+
+		//cprintf("A\n");
+
+		/* atomically enqueue myself into wait queue
+		if this process is already on the wait queue, do not add it again */
+		acquire(&wqueue.lock);
+		for (i=0; i<1000; i++){
+			if (wqueue.queue[i] == p){
+				break;
+			}
+			if (wqueue.queue[i] == 0){
+				wqueue.queue[i] = p;
+				break;
+			}
+		}
+		release(&wqueue.lock);
+		if (i == 1000){
+			// wait queue is full
+			return 0;
+		}
+		
+		// put myself to sleep and call scheduler
+		release(&MUTEXES.lock);
+		acquire(&ptable.lock);
+		p->state = SLEEPING;
+		sched();
+		release(&ptable.lock);
+
+		acquire(&MUTEXES.lock);
+	}
+
+	// lock available, take the lock
+	p->mux_ptrs[muxid]->state = 1;
+	release(&MUTEXES.lock);
+	return 1;
 }
+
 int
 sys_munlock(int muxid){
 
-	
-	return -1;
+	argint(0,(int*)&muxid);
+	struct proc *p, *sleepy_proc;
+	p = myproc();
+	int i;
+
+
+	// verify this process has access to this mutex
+	if (&p->mux_ptrs[muxid] == 0){
+		return 0;
+	}
+
+	// set lock state to available
+	acquire(&MUTEXES.lock);
+	p->mux_ptrs[muxid]->state = 0;
+	release(&MUTEXES.lock);
+
+	// atomically dequeue process from wait queue and wake it up
+	acquire(&wqueue.lock);
+	sleepy_proc = wqueue.queue[0];
+	for (i=0; i<999; i++){
+		wqueue.queue[i] = wqueue.queue[i+1];
+	}
+	wqueue.queue[999] = 0;
+	release(&wqueue.lock);
+
+	acquire(&ptable.lock);
+	sleepy_proc->state = RUNNABLE;
+	release(&ptable.lock);
+
+	return 1;
 }
 

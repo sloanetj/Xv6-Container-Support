@@ -1,17 +1,20 @@
 #include "mutex.h"
 
-/* mutex contains the name given at creation, the state of the mutex: 
-1 if taken, 0 if not taken, and a lock for atomic read/writes */
+/* mutex contains the name given at creation, and the state of the mutex: 
+1 if taken, 0 if not taken */
 struct mutex {
-	struct spinlock lock; 
-
 	char *name;
 	int state;
 };
 
-/* global array contains all the mutexes
-indexed by the mutex id returned at creation */
-struct mutex MUTEXES[MUX_MAXNUM];
+/* global array contains all the mutexes indexed by the mutex id returned at 
+creation and a lock for atomic read/writes */
+struct mutex_table {
+	struct spinlock lock; 
+	struct mutex muxes[MUX_MAXNUM];
+};
+struct mutex_table MUTEXES;
+
 
 
 // Per-CPU state
@@ -81,7 +84,7 @@ struct proc {
 	points to the mutex in the global array. If the process does 
 	not have access, the corresponding pointer in the array is 
 	0 (null). */
-	struct mutex *	  muxes[MUX_MAXNUM];	
+	struct mutex *	  mux_ptrs[MUX_MAXNUM];	
 
 
 };
@@ -91,3 +94,18 @@ struct proc {
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+
+
+/* wait queue, really just an array, of static size. i.e. maximum 
+of 1000 processes can wait on a mutex */
+struct wait_queue {
+	struct spinlock lock;
+	struct proc *queue[1000];
+};
+struct wait_queue wqueue;
+
+
+struct {
+	struct spinlock lock;
+	struct proc     proc[NPROC];
+} ptable;

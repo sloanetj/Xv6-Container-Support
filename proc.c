@@ -6,11 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 
-
-struct {
-	struct spinlock lock;
-	struct proc     proc[NPROC];
-} ptable;
+// ptable moved to proc.h
 
 static struct proc *initproc;
 
@@ -117,7 +113,7 @@ found:
 	// initialize the mutex-reference table to null
 	int i;
 	for (i=0; i<MUX_MAXNUM; i++){
-		p->muxes[i] = 0;
+		p->mux_ptrs[i] = 0;
 	}
 
 
@@ -127,7 +123,12 @@ found:
 // PAGEBREAK: 32
 // Set up first user process.
 
-// MODIFIED TO INITIALIZE GLOBAL MUTEX TABLE TO EMPTY MUTEXES
+/* MODIFIED TO: 
+	INITIALIZE GLOBAL MUTEX TABLE TO EMPTY MUTEXES  
+	INITIALIZE WAIT QUEUE TO NULL
+	INIT MUTEX TABLE LOCK
+	INIT WAIT QUEUE LOCK
+*/
 void
 userinit(void)
 {
@@ -165,9 +166,17 @@ userinit(void)
 	// initialize global mutex table to empty mutexes
 	int i;
 	for(i=0; i<MUX_MAXNUM; i++){
-		MUTEXES[i].name = 0;
-		MUTEXES[i].state = -1;
+		MUTEXES.muxes[i].name = 0;
+		MUTEXES.muxes[i].state = -1;
 	}
+	// initialize wait queue to null
+	for (i=0; i<1000; i++){
+		wqueue.queue[i] = 0;
+	}
+	// init global mutex table lock
+	initlock(&MUTEXES.lock, "mutex_table");
+	// init wait queue lock
+	initlock(&wqueue.lock, "wqueue");
 }
 
 // Grow current process's memory by n bytes.
@@ -192,6 +201,8 @@ growproc(int n)
 // Create a new process copying p as the parent.
 // Sets up stack to return as if from system call.
 // Caller must set state of returned proc to RUNNABLE.
+
+// MODIED TO PASS MUTEX ACCESS FROM PARENT TO CHILD
 int
 fork(void)
 {
@@ -231,6 +242,11 @@ fork(void)
 	np->state = RUNNABLE;
 
 	release(&ptable.lock);
+
+	// child inherets mutex ownership from parent
+	for(i=0; i<MUX_MAXNUM; i++)
+		np->mux_ptrs[i] = curproc->mux_ptrs[i];
+
 
 	return pid;
 }
