@@ -117,9 +117,40 @@ sys_mcreate(char *name){
 	return -1;
 }
 
-void
+int
 sys_mdelete(int muxid){
 	
+	argint(0,(int*)&muxid);
+	struct proc *curproc = myproc();
+	struct proc *p;
+
+	// verify we have access to this mutex
+	if (curproc->mux_ptrs[muxid] == 0){
+		return 0;
+	}
+
+	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+		if (p != curproc && p->mux_ptrs[muxid] != 0){
+			goto rmptr;
+		}			
+	} // if we made it here, we are the only process with access to this mutex
+
+	// atomically set global mutex to empty state
+	acquire(&MUTEXES.lock);
+	curproc->mux_ptrs[muxid]->name = 0;
+	curproc->mux_ptrs[muxid]->state = -1;
+	release(&MUTEXES.lock);
+
+
+	// remove reference to mutex
+	curproc->mux_ptrs[muxid] = 0;
+	return 1;
+
+
+rmptr:
+	// remove this process's reference to mutex
+	curproc->mux_ptrs[muxid] = 0;
+	return 1;
 }
 
 

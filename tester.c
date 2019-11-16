@@ -10,7 +10,6 @@ int main(){
 
 	id = mutex_create("mux1");
 	
-	// TRY USING PIPES INSTEAD - DIFFERENT PROCESSES MAY HAVE DIFFERENT KERNEL STACKS
 	for(i=0; i<5; i++){
 		if (fork() == 0){
 			if (!mutex_lock(id)){
@@ -33,11 +32,24 @@ int main(){
 		wait();
 	}
 
+	// test delete
+	if (!mutex_delete(id)){
+		printf(1,"DELETE FAILURE\n");
+		exit();
+	}
+	if (!mutex_lock(id)){
+		printf(1,"DELETE SUCCESS\n");
+		exit();
+	}
+
 	exit();
 }
 
 int mutex_create(char *name){
 	return mcreate(name);
+}
+int mutex_delete(int muxid){
+	return mdelete(muxid);
 }
 int mutex_lock(int muxid){
 	return mlock(muxid);

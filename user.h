@@ -24,7 +24,7 @@ char *sbrk(int);
 int   sleep(int);
 int   uptime(void);
 int   mcreate(char *);
-void   mdelete(int);
+int   mdelete(int);
 int   mlock(int);
 int   munlock(int);
 
