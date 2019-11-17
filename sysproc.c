@@ -90,7 +90,7 @@ char*
 sys_shmget(void)
 {
 	char* name;
-	if(argptr(0, (void *)&name, sizeof(*name)) < 0) return -1;
+	if(argptr(0, (void *)&name, sizeof(*name)) < 0) return "failed";
 
 	return shmget(name);
 }
