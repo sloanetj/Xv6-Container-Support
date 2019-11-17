@@ -96,7 +96,7 @@ sys_shmget(void)
 }
 
 int
-sys_rem(void)
+sys_shmrem(void)
 {
 	char* name;
 	if(argptr(0, (void *)&name, sizeof(*name)) < 0) return -1;
