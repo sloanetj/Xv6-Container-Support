@@ -24,7 +24,7 @@ char *sbrk(int);
 int   sleep(int);
 int   uptime(void);
 char *shm_get(char*);
-int   shm_rem(int);
+int   shm_rem(char*);
 
 // ulib.c
 int   stat(char *, struct stat *);
