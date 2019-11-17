@@ -96,3 +96,15 @@ memmove(void *vdst, void *vsrc, int n)
 	while (n-- > 0) *dst++= *src++;
 	return vdst;
 }
+
+char*
+shm_get(char* name)
+{
+	return "test";
+}
+
+int
+shm_rem(char* name)
+{
+	return "test";
+}

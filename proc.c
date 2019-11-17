@@ -506,3 +506,15 @@ procdump(void)
 		cprintf("\n");
 	}
 }
+
+char*
+shmget(char* name)
+{
+	return "test";
+}
+
+int
+shmrem(char* name)
+{
+	return "test";
+}

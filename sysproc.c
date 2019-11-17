@@ -85,3 +85,21 @@ sys_uptime(void)
 	release(&tickslock);
 	return xticks;
 }
+
+char*
+sys_shmget(void)
+{
+	char* name;
+	if(argptr(0, (void *)&name, sizeof(*name)) < 0) return -1;
+
+	return shmget(name);
+}
+
+int
+sys_rem(void)
+{
+	char* name;
+	if(argptr(0, (void *)&name, sizeof(*name)) < 0) return -1;
+
+	return shmrem(name);
+}
