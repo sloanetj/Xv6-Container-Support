@@ -121,7 +121,7 @@ int          wait(void);
 void         wakeup(void *);
 void         yield(void);
 char*        shmget(char*);
-int          shmrem(int);
+int          shmrem(char*);
 
 // swtch.S
 void swtch(struct context **, struct context *);
