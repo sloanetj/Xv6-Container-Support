@@ -27,6 +27,8 @@ int   mcreate(char *);
 int   mdelete(int);
 int   mlock(int);
 int   munlock(int);
+int   waitcv(int);
+int   signalcv(int);
 
 // ulib.c
 int   stat(char *, struct stat *);

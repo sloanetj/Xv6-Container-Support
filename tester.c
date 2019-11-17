@@ -2,6 +2,7 @@
 #include "user.h"
 #include "printf.h"
 #include "mutex.h"
+#include "cv.h"
 
 int main(){
 	int id;
@@ -33,14 +34,42 @@ int main(){
 	}
 
 	// test delete
-	if (!mutex_delete(id)){
-		printf(1,"DELETE FAILURE\n");
+	// if (!mutex_delete(id)){
+	// 	printf(1,"DELETE FAILURE\n");
+	// 	exit();
+	// }
+	// if (!mutex_lock(id)){
+	// 	printf(1,"DELETE SUCCESS\n");
+	// 	exit();
+	// }
+
+
+	// test cv's
+	int muxid = mutex_create("cv test");
+	if (fork() == 0){
+		
+		if (!mutex_lock(muxid)){
+			printf(1,"SIGNAL LOCK FAILURE\n");
+			exit();
+		}
+		while (!cv_signal(muxid)){
+		}
+		if (!mutex_unlock(muxid)){
+			printf(1,"SIGNAL UNLOCK FAILURE\n");
+			exit();
+		}
 		exit();
 	}
-	if (!mutex_lock(id)){
-		printf(1,"DELETE SUCCESS\n");
+	if (!mutex_lock(muxid)){
+		printf(1,"LOCK FAILURE\n");
 		exit();
 	}
+	if (!cv_wait(muxid)){
+		printf(1,"CV WAIT FAILURE\n");
+		exit();
+	}
+	wait();
+	printf(1,"CV SUCCESS\n");
 
 	exit();
 }
@@ -56,4 +85,11 @@ int mutex_lock(int muxid){
 }
 int mutex_unlock(int muxid){
 	return munlock(muxid);
+}
+
+int cv_wait(int muxid){
+	return waitcv(muxid);
+}
+int cv_signal(int muxid){
+	return signalcv(muxid);
 }

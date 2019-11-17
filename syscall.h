@@ -24,4 +24,6 @@
 #define SYS_mdelete 23
 #define SYS_mlock 24
 #define SYS_munlock 25
+#define SYS_waitcv 26
+#define SYS_signalcv 27
 

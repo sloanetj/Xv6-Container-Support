@@ -1,10 +1,13 @@
 #include "mutex.h"
 
 /* mutex contains the name given at creation, and the state of the mutex: 
-1 if taken, 0 if not taken */
+1 if taken, 0 if not taken. Additionally, each mutex has a condition variable
+wait queue associated with it - used in sending/recieving requests to/from CM */
 struct mutex {
 	char *name;
 	int state;
+
+	struct proc *cv[1000];
 };
 
 /* global array contains all the mutexes indexed by the mutex id returned at 
@@ -96,8 +99,8 @@ struct proc {
 //   expandable heap
 
 
-/* wait queue, really just an array, of static size. i.e. maximum 
-of 1000 processes can wait on a mutex */
+/* wait queue used for unblocking processes waiting to take a mutex, really just an 
+array, of static size. i.e. maximum of 1000 processes can wait on a mutex */
 struct wait_queue {
 	struct spinlock lock;
 	struct proc *queue[1000];

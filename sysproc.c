@@ -141,7 +141,6 @@ sys_mdelete(int muxid){
 	curproc->mux_ptrs[muxid]->state = -1;
 	release(&MUTEXES.lock);
 
-
 	// remove reference to mutex
 	curproc->mux_ptrs[muxid] = 0;
 	return 1;
@@ -214,11 +213,12 @@ sys_munlock(int muxid){
 	int i;
 
 
-	// verify this process has access to this mutex
-	if (&p->mux_ptrs[muxid] == 0){
+	/* verify this process has access to this mutex
+	and make sure proc is currently holding this mutex*/
+	if (p->mux_ptrs[muxid] == 0 || p->mux_ptrs[muxid]->state != 1){
 		return 0;
 	}
-
+	
 	// set lock state to available
 	acquire(&MUTEXES.lock);
 	p->mux_ptrs[muxid]->state = 0;
@@ -227,12 +227,97 @@ sys_munlock(int muxid){
 	// atomically dequeue process from wait queue and wake it up
 	acquire(&wqueue.lock);
 	sleepy_proc = wqueue.queue[0];
+	// if the queue is empty we are done
+	if (sleepy_proc == 0){
+		release(&wqueue.lock);
+		return 1;
+	}
 	for (i=0; i<999; i++){
 		wqueue.queue[i] = wqueue.queue[i+1];
 	}
 	wqueue.queue[999] = 0;
 	release(&wqueue.lock);
 
+	acquire(&ptable.lock);
+	sleepy_proc->state = RUNNABLE;
+	release(&ptable.lock);
+
+	return 1;
+}
+
+
+int
+sys_waitcv(int muxid){
+
+	argint(0,(int*)&muxid);
+	struct proc *p = myproc();
+	int i;
+
+	/* atomically enqueue proc to mux's cv wait queue if this 
+	process is already on the wait queue, do not add it again */
+	acquire(&MUTEXES.lock);
+	for (i=0; i<1000; i++){
+		if (p->mux_ptrs[muxid]->cv[i] == p){
+			break;
+		}
+		if (p->mux_ptrs[muxid]->cv[i] == 0){
+			p->mux_ptrs[muxid]->cv[i]= p;
+			break;
+		}
+	}
+	release(&MUTEXES.lock);
+	if (i == 1000){
+		// cv wait queue is full
+		return 0;
+	}
+	
+	// sleep self and call scheduler
+	acquire(&ptable.lock);
+	p->state = SLEEPING;
+	// release mutex
+	if (!sys_munlock(muxid)){
+		return 0;
+	}
+	sched();
+	release(&ptable.lock);
+
+	// take mutex
+	if (!sys_mlock(muxid)){
+		return 0;
+	}
+	return 1;
+
+}
+int 
+sys_signalcv(int muxid){
+
+	argint(0,(int*)&muxid);
+	struct proc *p, *sleepy_proc; 
+	p = myproc();
+	int i;
+
+	/* verify this process has access to this mutex
+	and make sure proc is currently holding this mutex*/
+	if (p->mux_ptrs[muxid] == 0 || p->mux_ptrs[muxid]->state != 1){
+		cprintf("A\n");
+		return 0;
+	}
+
+	// atomically dequeue proc from mux's cv wait queue
+	acquire(&MUTEXES.lock);
+	sleepy_proc = p->mux_ptrs[muxid]->cv[0];
+	if (sleepy_proc == 0){
+		release(&MUTEXES.lock);
+		cprintf("B\n");
+		return 0;
+	}
+	for (i=0; i<999; i++){
+		p->mux_ptrs[muxid]->cv[i] = p->mux_ptrs[muxid]->cv[i+1];
+	}
+	p->mux_ptrs[muxid]->cv[999] = 0;
+	release(&MUTEXES.lock);
+
+	// wake up proc 
 	acquire(&ptable.lock);
 	sleepy_proc->state = RUNNABLE;
 	release(&ptable.lock);

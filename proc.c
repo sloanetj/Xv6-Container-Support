@@ -165,9 +165,13 @@ userinit(void)
 
 	// initialize global mutex table to empty mutexes
 	int i;
+	int j;
 	for(i=0; i<MUX_MAXNUM; i++){
 		MUTEXES.muxes[i].name = 0;
 		MUTEXES.muxes[i].state = -1;
+		for (j=0; j<1000; j++){
+			MUTEXES.muxes[i].cv[j] = 0;
+		}
 	}
 	// initialize wait queue to null
 	for (i=0; i<1000; i++){
