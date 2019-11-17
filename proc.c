@@ -516,5 +516,5 @@ shmget(char* name)
 int
 shmrem(char* name)
 {
-	return "test";
+	return 0;
 }
