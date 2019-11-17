@@ -106,5 +106,5 @@ shm_get(char* name)
 int
 shm_rem(char* name)
 {
-	return "test";
+	return 0;
 }
