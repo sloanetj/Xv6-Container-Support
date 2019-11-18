@@ -1,5 +1,5 @@
 #define SHM_MAXNUM  32  //max shared memory
-#define NULL (char*)0
+#define NULL 0
 
 struct shm_pg{
   uint allocated; //boolean to tell if its allocated alread
