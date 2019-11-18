@@ -354,6 +354,75 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 	return 0;
 }
 
+int
+findpagevm(struct shm_pg *pg)
+{
+	struct proc *p = myproc();
+
+	int pg_num;
+	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+	{
+		if(p->shmpgs[pg_num] != 0 && strcmp(&p->shmpgs[pg_num]->name,pg-> name) == 0)
+		{
+			return pg_num;
+		}
+	}
+	return -1; //error
+}
+
+
+char*
+mappage(struct proc *pg)
+{
+	struct proc *p = myproc();
+
+	char *vas;
+	char* base = (char*)KERNBASE - 4096;
+
+	int pg_num = findpagevm(pg);
+
+	//if page elready exists
+	if(pg_num >= 0)
+	{
+		return (char*)(base - 4096);
+	}
+	else
+	{
+		for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+		{
+			if(!p->shmpgs[pg_num])
+			{
+				p->shmpgs[pg_num] = pg;
+				vas = base;
+			}
+			base -= 4096;
+		}
+	}
+
+	if(mappages(p->pgdir, (void*)vas, 4096, V2P(pg->addr), PTE_P | PTE_W | PTE_U) >= 0)
+	{
+		pg->ref_count++;
+		return vas;
+	}
+
+	return 0;
+}
+
+int
+shmpg_unmap(struct shm_pg *pg)
+{
+	struct proc *p;
+
+	int pg_num = findpagevm(pg);
+
+	p->shmpgs[page_num] = 0;
+
+	//char *vas = (char*)((KERNBASE - 4096) - (pg_num*4096));
+
+	return --pg->ref_count;
+}
+
+
 // PAGEBREAK!
 // Blank page.
 // PAGEBREAK!

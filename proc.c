@@ -517,34 +517,70 @@ procdump(void)
 int
 findpage(char* name)
 {
-	return 0;
+	struct shm_pg *pg;
+
+	int pg_num = 0;
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	{
+		if(strcmp(&pg->name, name) == 0)
+		{
+			i(!pg->allocated)
+			{
+				//allocate page
+				pg->addr = kalloc();
+				pg->allocated = 1;
+				memset(pg->addr, 0, 4096);
+			}
+			return pg_num;
+		}
+		pg_num++;
+	}
+	return -1; //error
 }
+
 
 char*
 shmget(char* name)
 {
 	char *vas;
-	struct shm_pg *pgl
+	struct shm_pg *pg;
 
 	int page_num = findpage(name);
-	//Map a 4096 page into the calling process’s virtual address space
 
-	//it should likely map at the address that a sbrk would normally use next
-	//return null if name is null or memory cannot be maped
+	if(page_num >= 0)
+	{
+		pg = &shmtable.pages[page_num];
+	}
+	else
+	{
+		//allocate page
+		pg->addr = kalloc();
+		pg->name = name;
+		pg->allocated = 1;
+		memset(pg->addr, 0, 4096);
+	}
 
-
-
-
-
-	//allocate page
-
-
-
-	return "test";
+	vas = mappage(pg);
+	return vas;
 }
 
 int
 shmrem(char* name)
 {
-	return 0;
+	struct shm_pg *pg;
+
+	int ref_count;
+
+	uint pg_num = findpage(name);
+
+	if(shmtable.pages[pg_num].ref_count > 0)
+	{
+		pg = &shmtable.pages[pg_num];
+		ref_count = shmpg_unmap(pg);
+		if(ref_count == 0)
+		{
+			pgdealloc(pg);
+		}
+	}
+	return ref_count;
 }

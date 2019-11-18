@@ -9,6 +9,7 @@ struct shm_pg{
   struct shm shm; //
   uint allocated; //boolean to tell if its allocated alread
   char* name;
+  int  addr;
   int  vas;
   uint ref_count; //tracks how many processes have the shared page mapped into them
 };
