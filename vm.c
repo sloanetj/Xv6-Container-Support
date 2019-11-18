@@ -376,7 +376,7 @@ mappage(struct shm_pg *pg)
 {
 	struct proc *p = myproc();
 
-	char *vas;
+	char *vas = 0;
 	char* base = (char*)KERNBASE - 4096;
 
 	int pg_num = findpagevm(pg);
