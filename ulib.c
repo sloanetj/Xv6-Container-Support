@@ -107,5 +107,5 @@ shm_get(char* name)
 int
 shm_rem(char* name)
 {
-	return shmrem("test";
+	return shmrem("test");
 }
