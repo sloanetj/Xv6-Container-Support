@@ -100,11 +100,11 @@ memmove(void *vdst, void *vsrc, int n)
 char*
 shm_get(char* name)
 {
-	return shmget("test");
+	return shmget(name);
 }
 
 int
 shm_rem(char* name)
 {
-	return shmrem("test");
+	return shmrem(name);
 }

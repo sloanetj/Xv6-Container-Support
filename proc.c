@@ -542,7 +542,7 @@ findpage(char* name)
 char*
 shmget(char* name)
 {
-	char *vas;
+	char *vas = NULL;
 	struct shm_pg *pg = 0;
 
 	int page_num = findpage(name);
@@ -584,6 +584,8 @@ shmrem(char* name)
 			kfree(pg->addr);
 			pg->addr = 0;
 		}
+		return ref_count;
 	}
-	return ref_count;
+
+	return NULL;
 }
