@@ -101,11 +101,11 @@ char*
 shm_get(char* name)
 {
 
-	return "test";
+	return shmget("test");
 }
 
 int
 shm_rem(char* name)
 {
-	return 0;
+	return shmrem("test";
 }
