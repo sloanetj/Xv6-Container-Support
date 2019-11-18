@@ -42,6 +42,7 @@ enum procstate
 	ZOMBIE
 };
 
+#include "shm.h"
 // Per-process state
 struct proc {
 	uint              sz;            // Size of process memory (bytes)
