@@ -571,7 +571,7 @@ shmrem(char* name)
 {
 	struct shm_pg *pg;
 
-	int ref_count;
+	int ref_count = 0;
 
 	uint pg_num = findpage(name);
 
