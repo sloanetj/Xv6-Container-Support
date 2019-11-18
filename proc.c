@@ -522,9 +522,9 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		if(strcmp(&pg->name, name) == 0)
+		if(strncmp(&pg->name, name,200) == 0)
 		{
-			i(!pg->allocated)
+			if(!pg->allocated)
 			{
 				//allocate page
 				pg->addr = kalloc();
@@ -564,6 +564,8 @@ shmget(char* name)
 	return vas;
 }
 
+
+
 int
 shmrem(char* name)
 {
@@ -579,7 +581,8 @@ shmrem(char* name)
 		ref_count = shmpg_unmap(pg);
 		if(ref_count == 0)
 		{
-			pgdealloc(pg);
+			kfree(pg->addr);
+			pg->addr = 0;
 		}
 	}
 	return ref_count;
