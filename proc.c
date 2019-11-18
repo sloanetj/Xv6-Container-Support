@@ -6,6 +6,13 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "shm.h"
+
+
+struct {
+	struct shm_pg pages[SHM_MAXNUM];
+} shmtable;
+
 
 struct {
 	struct spinlock lock;
@@ -507,9 +514,32 @@ procdump(void)
 	}
 }
 
+int
+findpage(char* name)
+{
+	return 0;
+}
+
 char*
 shmget(char* name)
 {
+	char *vas;
+	struct shm_pg *pgl
+
+	int page_num = findpage(name);
+	//Map a 4096 page into the calling process’s virtual address space
+
+	//it should likely map at the address that a sbrk would normally use next
+	//return null if name is null or memory cannot be maped
+
+
+
+
+
+	//allocate page
+
+
+
 	return "test";
 }
 
