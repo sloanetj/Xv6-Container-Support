@@ -411,7 +411,7 @@ mappage(struct shm_pg *pg)
 int
 shmpg_unmap(struct shm_pg *pg)
 {
-	struct proc *p;
+	struct proc *p = myproc();
 
 	int pg_num = findpagevm(pg);
 
