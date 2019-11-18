@@ -362,7 +362,7 @@ findpagevm(struct shm_pg *pg)
 	int pg_num;
 	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
 	{
-		if(p->shmpgs[pg_num] != 0 && strncmp(p->shmpgs[pg_num]->name,pg-> name, 200) == 0)
+		if(p->shmpgs[pg_num] != 0 && strncmp(p->shmpgs[pg_num].name,pg-> name, 200) == 0)
 		{
 			return pg_num;
 		}
