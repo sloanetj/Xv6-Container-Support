@@ -42,7 +42,7 @@ enum procstate
 	ZOMBIE
 };
 
-#include "shm.h"
+#define SHM_MAXNUM  32  //max shared memory
 // Per-process state
 struct proc {
 	uint              sz;            // Size of process memory (bytes)
