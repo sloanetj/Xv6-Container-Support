@@ -372,7 +372,7 @@ findpagevm(struct shm_pg *pg)
 
 
 char*
-mappage(struct proc *pg)
+mappage(struct shm_pg *pg)
 {
 	struct proc *p = myproc();
 
