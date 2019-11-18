@@ -6,7 +6,7 @@
 // };
 
 struct shm_pg{
-  struct shm shm; //
+//  struct shm shm; //
   uint allocated; //boolean to tell if its allocated alread
   char* name;
   char*  addr;
