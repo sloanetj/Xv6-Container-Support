@@ -18,7 +18,7 @@ main(void)
   //   *shared_memory_address2 -= 1;
   //   exit();
   // }
-  wait();
+  //wait();
   printf(1,"%d\n", *shared_memory_address1);
   exit();
 }
