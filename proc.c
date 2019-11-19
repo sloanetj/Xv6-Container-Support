@@ -518,11 +518,12 @@ int
 findpage(char* name)
 {
 	struct shm_pg *pg;
-	cprintf("THE BARE MINIMUM lol");
 
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
+		cprintf("THE BARE MINIMUM lol");
+
 		if(strncmp(pg->name, name,200) == 0)
 		{
 			if(!pg->allocated)
