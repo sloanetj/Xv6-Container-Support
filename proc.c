@@ -518,6 +518,7 @@ int
 findpage(char* name)
 {
 	struct shm_pg *pg;
+	cprintf("THE BARE MINIMUM lol");
 
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
@@ -545,7 +546,6 @@ shmget(char* name)
 	char *vas = NULL;
 	struct shm_pg *pg = NULL;
 
-	cprintf("THE BARE MINIMUM");
 
 	int page_num = findpage(name);
 
