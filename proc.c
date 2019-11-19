@@ -543,7 +543,7 @@ char*
 shmget(char* name)
 {
 	char *vas = NULL;
-	struct shm_pg *pg = 0;
+	struct shm_pg *pg = NULL;
 
 	int page_num = findpage(name);
 
