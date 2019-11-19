@@ -100,6 +100,7 @@ memmove(void *vdst, void *vsrc, int n)
 char*
 shm_get(char* name)
 {
+	printf(1,"dasfjldsafj\n");
 	return shmget(name);
 }
 
