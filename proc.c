@@ -527,9 +527,9 @@ findpage(char* name)
 			if(!pg->allocated)
 			{
 				//allocate page
-				pg->addr = kalloc();
+				pg->pa = kalloc();
 				pg->allocated = 1;
-				memset(pg->addr, 0, 4096);
+				memset(pg->pa, 0, 4096);
 			}
 			return pg_num;
 		}
@@ -554,10 +554,10 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		pg->addr = kalloc();
+		pg->pa = kalloc();
 		pg->name = name;
 		pg->allocated = 1;
-		memset(pg->addr, 0, 4096);
+		memset(pg->pa, 0, 4096);
 	}
 
 	vas = mappage(pg);
@@ -581,8 +581,8 @@ shmrem(char* name)
 		ref_count = shmpg_unmap(pg);
 		if(ref_count == 0)
 		{
-			kfree(pg->addr);
-			pg->addr = 0;
+			kfree(pg->pa);
+			pg->pa = 0;
 		}
 		return ref_count;
 	}
