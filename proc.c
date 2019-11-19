@@ -575,6 +575,7 @@ shmrem(char* name)
 
 	uint pg_num = findpage(name);
 
+	cprintf("THE BARE MINIMUM");
 	if(shmtable.pages[pg_num].ref_count > 0)
 	{
 		pg = &shmtable.pages[pg_num];
