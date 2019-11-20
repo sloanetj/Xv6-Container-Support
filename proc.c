@@ -523,7 +523,7 @@ findpage(char* name)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		cprintf("HERE");
-		if(pg->name != NULL)
+		if(pg != NULL)
 		{
 
 			cprintf("LOL NO HEREEEE");
