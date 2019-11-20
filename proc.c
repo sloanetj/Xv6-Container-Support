@@ -529,7 +529,7 @@ shminit(void)
 		pg->ref_count = 0;
 	}
 
-	shmtable->initialized = 1;
+	shmtable.initialized = 1;
 }
 
 int
@@ -567,7 +567,7 @@ findpage(char* name)
 char*
 shmget(char* name)
 {
-	if(shmtable->initialized == 0)
+	if(shmtable.initialized == 0)
 	{
 		shminit();
 	}
