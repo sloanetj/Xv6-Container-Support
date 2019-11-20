@@ -540,10 +540,7 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		if(pg->name)
-		{
-
-		}
+		cprintf("JAJAA");
 		if(strncmp(pg->name, name,200) == 0)
 		{
 
