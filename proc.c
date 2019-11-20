@@ -522,15 +522,13 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-
+cprintf("LMAO");
 		if(strncmp(pg->name, name,200) == 0)
 		{
-			cprintf("THE BARE MINIMUM haha");
 
 			if(!pg->allocated)
 			{
 
-				cprintf("THE BARE MINIMUM MMMMMMMMMMMM");
 
 				//allocate page
 				pg->pa = kalloc();
