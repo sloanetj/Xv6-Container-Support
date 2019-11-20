@@ -522,8 +522,11 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
+		cprintf("HERE");
 		if(pg->name != NULL)
 		{
+
+			cprintf("LOL NO HEREEEE");
 			if(strncmp(pg->name, name,200) == 0)
 			{
 
