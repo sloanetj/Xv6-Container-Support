@@ -10,6 +10,7 @@
 
 
 struct {
+	uint initialized; //0 if not initialized, 1 if initialized
 	struct shm_pg pages[SHM_MAXNUM];
 } shmtable;
 
@@ -514,6 +515,23 @@ procdump(void)
 	}
 }
 
+void
+shminit(void)
+{
+	struct shm_pg pg;
+
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	{
+		pg->allocated = 0;
+		pg->name = NULL;
+		pg->pa = NULL;
+		pg->vas = NULL;
+		pg->ref_count = 0;
+	}
+
+	shmtable->initialized = 1;
+}
+
 int
 findpage(char* name)
 {
@@ -522,27 +540,24 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		//cprintf("HERE");
-		if(pg != NULL)
+		if(pg->name)
 		{
 
-			if(strncmp(pg->name, name,200) == 0)
-			{
-				cprintf("LOL NO HEREEEE");
-
-				if(!pg->allocated)
-				{
-
-
-					//allocate page
-					pg->pa = kalloc();
-					pg->allocated = 1;
-					memset(pg->pa, 0, 4096);
-				}
-				return pg_num;
-			}
 		}
+		if(strncmp(pg->name, name,200) == 0)
+		{
 
+			if(!pg->allocated)
+			{
+
+
+				//allocate page
+				pg->pa = kalloc();
+				pg->allocated = 1;
+				memset(pg->pa, 0, 4096);
+			}
+			return pg_num;
+		}
 		pg_num++;
 	}
 	return -1; //error
@@ -552,6 +567,11 @@ findpage(char* name)
 char*
 shmget(char* name)
 {
+	if(shmtable->initialized == 0)
+	{
+		shminit();
+	}
+
 	char *vas = NULL;
 	struct shm_pg *pg = NULL;
 
