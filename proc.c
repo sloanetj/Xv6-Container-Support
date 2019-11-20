@@ -522,13 +522,13 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		cprintf("HERE");
+		//cprintf("HERE");
 		if(pg != NULL)
 		{
 
-			cprintf("LOL NO HEREEEE");
 			if(strncmp(pg->name, name,200) == 0)
 			{
+				cprintf("LOL NO HEREEEE");
 
 				if(!pg->allocated)
 				{
