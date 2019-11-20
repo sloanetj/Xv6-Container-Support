@@ -522,21 +522,24 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-cprintf(pg->name);
-		if(strncmp(pg->name, name,200) == 0)
+		if(pg->name)
 		{
-
-			if(!pg->allocated)
+			if(strncmp(pg->name, name,200) == 0)
 			{
 
+				if(!pg->allocated)
+				{
 
-				//allocate page
-				pg->pa = kalloc();
-				pg->allocated = 1;
-				memset(pg->pa, 0, 4096);
+
+					//allocate page
+					pg->pa = kalloc();
+					pg->allocated = 1;
+					memset(pg->pa, 0, 4096);
+				}
+				return pg_num;
 			}
-			return pg_num;
 		}
+
 		pg_num++;
 	}
 	return -1; //error
