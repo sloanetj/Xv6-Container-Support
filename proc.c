@@ -531,46 +531,46 @@ procdump(void)
 // 	shmtable.initialized = 1;
 // }
 
-struct shm_pg*
-allocnewpg(char* name)
-{
-	struct shm_pg *pg;
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-	{
-		if(pg->pa == 0)
-		{
-			strncpy(pg->name, name, 50);
-			pg->pa = kalloc();
-			pg->allocated = 1;
-			memset(pg->pa, 0, 4096);
-			return pg;
-		}
-	}
-	return NULL; //error
-}
-
-int
-findpage(char* name)
-{
-	struct shm_pg *pg;
-	int pg_num = 0;
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-	{
-		if(strncmp(pg->name, name,50) == 0)
-		{
-			if(!pg->allocated)
-			{
-				//allocate page
-				pg->pa = kalloc();
-				pg->allocated = 1;
-				memset(pg->pa, 0, PGSIZE);
-			}
-			return pg_num;
-		}
-		pg_num++;
-	}
-	return -1; //error
-}
+// struct shm_pg*
+// allocnewpg(char* name)
+// {
+// 	struct shm_pg *pg;
+// 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+// 	{
+// 		if(pg->pa == 0)
+// 		{
+// 			strncpy(pg->name, name, 50);
+// 			pg->pa = kalloc();
+// 			pg->allocated = 1;
+// 			memset(pg->pa, 0, 4096);
+// 			return pg;
+// 		}
+// 	}
+// 	return NULL; //error
+// }
+//
+// int
+// findpage(char* name)
+// {
+// 	struct shm_pg *pg;
+// 	int pg_num = 0;
+// 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+// 	{
+// 		if(strncmp(pg->name, name,50) == 0)
+// 		{
+// 			if(!pg->allocated)
+// 			{
+// 				//allocate page
+// 				pg->pa = kalloc();
+// 				pg->allocated = 1;
+// 				memset(pg->pa, 0, PGSIZE);
+// 			}
+// 			return pg_num;
+// 		}
+// 		pg_num++;
+// 	}
+// 	return -1; //error
+// }
 
 
 // char*
@@ -658,28 +658,28 @@ findpage(char* name)
 
 
 
-int
-shmrem(char* name)
-{
-	struct shm_pg *pg;
-
-	int ref_count = 0;
-
-	uint pg_num = findpage(name);
-  if(pg_num <= SHM_MAXNUM)
-	{
-		if(shmtable.pages[pg_num].ref_count > 0)
-		{
-			pg = &shmtable.pages[pg_num];
-			ref_count = shmpg_unmap(pg);
-			if(ref_count == 0)
-			{
-				kfree(pg->pa);
-				pg->pa = 0;
-			}
-			return ref_count;
-		}
-	}
+// int
+// shmrem(char* name)
+// {
+// 	struct shm_pg *pg;
+//
+// 	int ref_count = 0;
+//
+// 	uint pg_num = findpage(name);
+//   if(pg_num <= SHM_MAXNUM)
+// 	{
+// 		if(shmtable.pages[pg_num].ref_count > 0)
+// 		{
+// 			pg = &shmtable.pages[pg_num];
+// 			ref_count = shmpg_unmap(pg);
+// 			if(ref_count == 0)
+// 			{
+// 				kfree(pg->pa);
+// 				pg->pa = 0;
+// 			}
+// 			return ref_count;
+// 		}
+// 	}
 
 
 	return NULL;
