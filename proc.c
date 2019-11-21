@@ -596,12 +596,12 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		pg = allocnewpg(name);
+	//	pg = allocnewpg(name);
 
 	}
 
 
-	vas = pg->pa;//mappage(pg);
+	vas = mappage(pg);
 
 
 
