@@ -532,6 +532,33 @@ shmget(char* name)
 // 	return --pg->ref_count;
 // }
 
+int
+shmrem(char* name)
+{
+	// struct shm_pg *pg;
+	//
+	// int ref_count = 0;
+	//
+	// uint pg_num = findpage(name);
+  // if(pg_num <= SHM_MAXNUM)
+	// {
+	// 	if(shmtable.pages[pg_num].ref_count > 0)
+	// 	{
+	// 		pg = &shmtable.pages[pg_num];
+	// 		ref_count = shmpg_unmap(pg);
+	// 		if(ref_count == 0)
+	// 		{
+	// 			kfree(pg->pa);
+	// 			pg->pa = 0;
+	// 		}
+	// 		return ref_count;
+	// 	}
+	// }
+
+
+	return -1;
+}
+
 
 // PAGEBREAK!
 // Blank page.
