@@ -403,9 +403,9 @@ mappage(struct shm_pg *pg)
 
 	if(mappages(p->pgdir, (void*)vas, 4096, V2P(pg->pa), PTE_P | PTE_W | PTE_U) >= 0)
 	{
+		pg->ref_count++;
 		cprintf("DID I MAKE IT HEREEEE?????????????????????????");
 
-		pg->ref_count++;
 		return vas;
 	}
 
