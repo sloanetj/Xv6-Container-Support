@@ -13,6 +13,28 @@ pde_t *     kpgdir; // for use in scheduler()
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
+
+struct {
+	uint initialized; //0 if not initialized, 1 if initialized
+	struct shm_pg pages[SHM_MAXNUM];
+} shmtable;
+
+void
+shminit(void)
+{
+	struct shm_pg *pg;
+
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	{
+		pg->allocated = 0;
+		pg->name = 0;
+		pg->pa = 0;
+		pg->ref_count = 0;
+	}
+
+	shmtable.initialized = 1;
+}
+
 void
 seginit(void)
 {

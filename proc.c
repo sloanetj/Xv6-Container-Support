@@ -9,10 +9,10 @@
 #include "shm.h"
 
 
-struct {
-	uint initialized; //0 if not initialized, 1 if initialized
-	struct shm_pg pages[SHM_MAXNUM];
-} shmtable;
+// struct {
+// 	uint initialized; //0 if not initialized, 1 if initialized
+// 	struct shm_pg pages[SHM_MAXNUM];
+// } shmtable;
 
 
 struct {
