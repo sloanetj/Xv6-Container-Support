@@ -27,7 +27,7 @@ shminit(void)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		pg->allocated = 0;
-		strncpy(pg->name, "test", 50);
+		pg->name = 0;
 		pg->pa = 0;
 		pg->ref_count = 0;
 	}
@@ -454,8 +454,6 @@ shmget(char* name)
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
-
-			cprintf("THEY MATCHED");
 			return vas;
 		}
 	}
@@ -473,6 +471,9 @@ shmget(char* name)
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
+
+			cprintf("THEY DID NOT MATCH");
+
 			return vas;
 		}
 	}
