@@ -539,7 +539,6 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		cprintf(pg->name);
 		// if(strncmp(pg->name, name,200) == 0)
 		// {
 		// 	cprintf("LOL");
@@ -582,10 +581,11 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		pg->pa = kalloc();
-		pg->name = name;
-		pg->allocated = 1;
-		memset(pg->pa, 0, 4096);
+		// pg->pa = kalloc();
+		// pg->name = name;
+		// pg->allocated = 1;
+		// memset(pg->pa, 0, 4096);
+		cprintf("HEYYYYY");
 	}
 
 	vas = mappage(pg);
