@@ -544,6 +544,8 @@ allocnewpg(char* name)
 			pg->pa = kalloc();
 			pg->allocated = 1;
 			memset(pg->pa, 0, 4096);
+
+			cprintf("IT WORKED");
 			return pg;
 		}
 	}
