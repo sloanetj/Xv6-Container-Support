@@ -601,7 +601,7 @@ shmget(char* name)
 	}
 
 
-	vas = pg->pa//mappage(pg);
+	vas = pg->pa;//mappage(pg);
 
 
 
