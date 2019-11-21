@@ -59,7 +59,7 @@ struct proc {
 	struct inode *    cwd;           // Current directory
 	char              name[16];      // Process name (debugging)
 
-	struct shm_pg*     shmpgs[SHM_MAXNUM];
+	//struct shm_pg*     shmpgs[SHM_MAXNUM];
 
 };
 
