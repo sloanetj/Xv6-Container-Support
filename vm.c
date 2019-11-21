@@ -468,13 +468,12 @@ shmget(char* name)
 			pg->pa = kalloc();
 			pg->ref_count = 1;
 			memset(pg->pa, 0, PGSIZE);
-			cprintf("HERE MEMSET");
-
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			cprintf("HERE MAPPAGES");
-
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
+
+			cprintf("HERE MYPROC");
+
 			return vas;
 		}
 	}
