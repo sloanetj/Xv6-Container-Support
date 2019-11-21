@@ -464,19 +464,15 @@ shmget(char* name)
 		if(pg->allocated == 0)
 		{
 			strncpy(pg->name, name, 50);
-			cprintf("HERE ONE");
-
 			pg->allocated = 1;
-			cprintf("HERE TWO");
-
 			pg->pa = kalloc();
-			cprintf("HERE THREE");
-
 			pg->ref_count = 1;
-			cprintf("HERE FOUR");
-
 			memset(pg->pa, 0, PGSIZE);
+			cprintf("HERE MEMSET");
+
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+			cprintf("HERE MAPPAGES");
+
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
 			return vas;
