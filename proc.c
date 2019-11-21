@@ -573,88 +573,88 @@ findpage(char* name)
 }
 
 
-char*
-shmget(char* name)
-{
-	if(shmtable.initialized == 0)
-	{
-		shminit();
-	}
-
-	struct shm_pg *pg;
-	char* vas = NULL;
-
-	//see if the name already exists in the table
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-	{
-		if(strncmp(pg->name, name,50) == 0)
-		{
-			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			pg->ref_count++;
-			vas = (char*)PGROUNDUP(myproc()->sz);
-			myproc()->sz += PGSIZE;
-			return vas;
-		}
-	}
-
-	//if name does not exist in table
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-	{
-		if(pg->allocated == 0)
-		{
-			strncpy(pg->name, name, 50);
-			pg->allocated = 1;
-			pg->pa = kalloc();
-			pg->ref_count = 1;
-			memset(pg->pa, 0, PGSIZE);
-			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			vas = (char*)PGROUNDUP(myproc()->sz);
-			myproc()->sz += PGSIZE;
-			return vas;
-		}
-	}
-
-	return "DID NOT WORK";
-
-	// char *vas = NULL;
-	// struct shm_pg *pg = NULL;
- //
- //
-	// int page_num = findpage(name);
- //
- // cprintf("PAGE NUM: %d     ", page_num);
-	// if(page_num >= 0)
-	// {
-	// 	pg = &shmtable.pages[page_num];
-	// }
-	// else
-	// {
-	// 	//allocate page
-	// 	pg = allocnewpg(name);
- //
-	// }
- //
- //
-	// vas = mappage(pg);
- //
- //
- //
-	// //allocate page
-	// // cprintf("HERE 1");
-	// // pg->pa = kalloc();
-	// // cprintf("HERE 2");
-	// //
-	// // pg->name = name;
-	// // cprintf("HERE 3");
-	// //
-	// // pg->allocated = 1;
-	// // cprintf("HERE 4");
-	// //
-	// // memset(pg->pa, 0, 4096);
-	// // cprintf("HERE 5");
- //
-	// return vas;
-}
+// char*
+// shmget(char* name)
+// {
+// 	if(shmtable.initialized == 0)
+// 	{
+// 		shminit();
+// 	}
+//
+// 	struct shm_pg *pg;
+// 	char* vas = NULL;
+//
+// 	//see if the name already exists in the table
+// 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+// 	{
+// 		if(strncmp(pg->name, name,50) == 0)
+// 		{
+// 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+// 			pg->ref_count++;
+// 			vas = (char*)PGROUNDUP(myproc()->sz);
+// 			myproc()->sz += PGSIZE;
+// 			return vas;
+// 		}
+// 	}
+//
+// 	//if name does not exist in table
+// 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+// 	{
+// 		if(pg->allocated == 0)
+// 		{
+// 			strncpy(pg->name, name, 50);
+// 			pg->allocated = 1;
+// 			pg->pa = kalloc();
+// 			pg->ref_count = 1;
+// 			memset(pg->pa, 0, PGSIZE);
+// 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+// 			vas = (char*)PGROUNDUP(myproc()->sz);
+// 			myproc()->sz += PGSIZE;
+// 			return vas;
+// 		}
+// 	}
+//
+// 	return "DID NOT WORK";
+//
+// 	// char *vas = NULL;
+// 	// struct shm_pg *pg = NULL;
+//  //
+//  //
+// 	// int page_num = findpage(name);
+//  //
+//  // cprintf("PAGE NUM: %d     ", page_num);
+// 	// if(page_num >= 0)
+// 	// {
+// 	// 	pg = &shmtable.pages[page_num];
+// 	// }
+// 	// else
+// 	// {
+// 	// 	//allocate page
+// 	// 	pg = allocnewpg(name);
+//  //
+// 	// }
+//  //
+//  //
+// 	// vas = mappage(pg);
+//  //
+//  //
+//  //
+// 	// //allocate page
+// 	// // cprintf("HERE 1");
+// 	// // pg->pa = kalloc();
+// 	// // cprintf("HERE 2");
+// 	// //
+// 	// // pg->name = name;
+// 	// // cprintf("HERE 3");
+// 	// //
+// 	// // pg->allocated = 1;
+// 	// // cprintf("HERE 4");
+// 	// //
+// 	// // memset(pg->pa, 0, 4096);
+// 	// // cprintf("HERE 5");
+//  //
+// 	// return vas;
+// }
 
 
 
