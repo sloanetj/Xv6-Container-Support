@@ -539,7 +539,6 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		cprintf("HAHAHHA");
 		// if(strncmp(pg->name, name,200) == 0)
 		// {
 		// 	cprintf("LOL");
@@ -575,20 +574,20 @@ shmget(char* name)
 
 	int page_num = findpage(name);
 
-	if(page_num >= 0)
-	{
-		pg = &shmtable.pages[page_num];
-	}
-	else
-	{
-		//allocate page
-		pg->pa = kalloc();
-		pg->name = name;
-		pg->allocated = 1;
-		memset(pg->pa, 0, 4096);
-	}
-
-	vas = mappage(pg);
+	// if(page_num >= 0)
+	// {
+	// 	pg = &shmtable.pages[page_num];
+	// }
+	// else
+	// {
+	// 	//allocate page
+	// 	pg->pa = kalloc();
+	// 	pg->name = name;
+	// 	pg->allocated = 1;
+	// 	memset(pg->pa, 0, 4096);
+	// }
+	//
+	// vas = mappage(pg);
 	return vas;
 }
 
