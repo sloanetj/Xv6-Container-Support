@@ -376,71 +376,73 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 	return 0;
 }
 
-int
-findpagevm(struct shm_pg *pg)
-{
-	struct proc *p = myproc();
+// int
+// findpagevm(struct shm_pg *pg)
+// {
+// 	struct proc *p = myproc();
+//
+// 	int pg_num;
+// 	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+// 	{
+// 		if(p->shmpgs[pg_num] != 0 && strncmp(p->shmpgs[pg_num]->name, pg->name, 200) == 0)
+// 		{
+// 			return pg_num;
+// 		}
+// 	}
+// 	return -1; //error
+// }
 
-	int pg_num;
-	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
-	{
-		if(p->shmpgs[pg_num] != 0 && strncmp(p->shmpgs[pg_num]->name, pg->name, 200) == 0)
-		{
-			return pg_num;
-		}
-	}
-	return -1; //error
-}
 
-
-char*
-mappage(struct shm_pg *pg)
-{
-	struct proc *p = myproc();
-
-	char *vas = 0;
-	char* base = (char*)KERNBASE - 4096;
-
-	int pg_num = findpagevm(pg);
-
-	cprintf("PGNUMVM %d   ", pg_num);
-	//if page elready exists
-	if(pg_num >= 0)
-	{
-
-		return (char*)(base - 4096);
-	}
-	else
-	{
-
-		for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
-		{
-			if(!p->shmpgs[pg_num])
-			{
-				p->shmpgs[pg_num] = pg;
-				vas = base;
-			}
-			base -= 4096;
-		}
-	}
-
-	if(mappages(p->pgdir, (void*)vas, 4096, V2P(pg->pa), PTE_P | PTE_W | PTE_U) >= 0)
-	{
-		pg->ref_count++;
-		return vas;
-	}
-
-	return 0;
-}
+// char*
+// mappage(struct shm_pg *pg)
+// {
+// 	struct proc *p = myproc();
+//
+// 	char *vas = 0;
+// 	char* base = (char*)KERNBASE - 4096;
+//
+// 	int pg_num = findpagevm(pg);
+//
+// 	cprintf("PGNUMVM %d   ", pg_num);
+// 	//if page elready exists
+// 	if(pg_num >= 0)
+// 	{
+//
+// 		return (char*)(base - 4096);
+// 	}
+// 	else
+// 	{
+//
+// 		for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+// 		{
+// 			if(!p->shmpgs[pg_num])
+// 			{
+// 				p->shmpgs[pg_num] = pg;
+// 				vas = base;
+// 			}
+// 			base -= 4096;
+// 		}
+// 	}
+//
+// 	if(mappages(p->pgdir, (void*)vas, 4096, V2P(pg->pa), PTE_P | PTE_W | PTE_U) >= 0)
+// 	{
+// 		pg->ref_count++;
+// 		return vas;
+// 	}
+//
+// 	return 0;
+// }
 
 char*
 shmget(char* name)
 {
 	if(shmtable.initialized == 0)
 	{
+		cprintf("GOTTA initialize");
 		shminit();
 	}
 
+	cprintf("INITIALIZEDDDDDDDD");
 	struct shm_pg *pg;
 	char* vas = NULL;
 
