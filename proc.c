@@ -577,15 +577,13 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		// pg->pa = kalloc();
-		// pg->name = name;
-		// pg->allocated = 1;
-		// memset(pg->pa, 0, 4096);
+		pg->pa = kalloc();
+		pg->name = name;
+		pg->allocated = 1;
+		memset(pg->pa, 0, 4096);
 	}
 
 	vas = mappage(pg);
-
-	cprintf("HEYYYYY");
 
 	return vas;
 }
