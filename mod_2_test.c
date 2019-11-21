@@ -20,7 +20,7 @@ main(void)
   // }
   //wait();
 
-  printf(1, shared_memory_address1);
+  printf(1, "%d",shared_memory_address1);
   printf(1, "END OF MAIN\n");
   exit();
 }
