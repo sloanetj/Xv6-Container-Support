@@ -27,7 +27,7 @@ shminit(void)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		pg->allocated = 0;
-		strncpy(pg->name, name, 50);
+		strncpy(pg->name, "test", 50);
 		pg->pa = 0;
 		pg->ref_count = 0;
 	}
