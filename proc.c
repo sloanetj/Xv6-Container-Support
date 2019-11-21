@@ -541,7 +541,7 @@ findpage(char* name)
 	{
 		if(strncmp(pg->name, name,200) == 0)
 		{
-			if(!pg->allocated)
+			if(pg->allocated == 0)
 			{
 				//allocate page
 				// pg->pa = kalloc();
