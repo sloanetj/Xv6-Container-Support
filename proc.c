@@ -600,7 +600,7 @@ shmget(char* name)
 
 	}
 
-	cprintf("DID I GET HERE");
+	cprintf(pg->name);
 
 	//vas = mappage(pg);
 
