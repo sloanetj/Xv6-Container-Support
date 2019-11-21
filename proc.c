@@ -570,7 +570,7 @@ shmget(char* name)
 
 	int page_num = findpage(name);
 
- cprintf("PAGE NUM: %d", page_num);
+ cprintf("PAGE NUM: %d     ", page_num);
 	if(page_num >= 0)
 	{
 		pg = &shmtable.pages[page_num];
