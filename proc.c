@@ -564,12 +564,13 @@ shmget(char* name)
 		shminit();
 	}
 
-	char *vas = 145;
+	char *vas = NULL;
 	struct shm_pg *pg = NULL;
 
 
 	int page_num = findpage(name);
 
+ cprintf("PAGE NUM: %d", page_num);
 	if(page_num >= 0)
 	{
 		pg = &shmtable.pages[page_num];
@@ -584,8 +585,6 @@ shmget(char* name)
 	}
 
 	vas = mappage(pg);
-
-	cprintf("HEYYYYY");
 
 	//allocate page
 	// cprintf("HERE 1");
