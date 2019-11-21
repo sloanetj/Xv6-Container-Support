@@ -27,7 +27,7 @@ shminit(void)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		pg->allocated = 0;
-		pg->name = 0;
+		strncpy(pg->name, name, 50);
 		pg->pa = 0;
 		pg->ref_count = 0;
 	}
@@ -471,14 +471,11 @@ shmget(char* name)
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
-
-			cprintf("HERE MYPROC");
-
 			return vas;
 		}
 	}
 
-	return "DID NOT WORK";
+	return NULL;
 
 	// char *vas = NULL;
 	// struct shm_pg *pg = NULL;
