@@ -454,6 +454,8 @@ shmget(char* name)
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
+
+			cprintf("HAHAH I MADE IT");
 			return vas;
 		}
 	}
