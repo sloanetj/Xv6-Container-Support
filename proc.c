@@ -543,8 +543,6 @@ findpage(char* name)
 		{
 			if(!pg->allocated)
 			{
-
-
 				//allocate page
 				pg->pa = kalloc();
 				pg->allocated = 1;
@@ -583,10 +581,12 @@ shmget(char* name)
 		// pg->name = name;
 		// pg->allocated = 1;
 		// memset(pg->pa, 0, 4096);
-		cprintf("HEYYYYY");
 	}
 
 	vas = mappage(pg);
+
+	cprintf("HEYYYYY");
+
 	return vas;
 }
 
