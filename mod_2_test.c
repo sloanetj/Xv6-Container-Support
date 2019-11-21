@@ -22,4 +22,5 @@ main(void)
   printf(1,shared_memory_address1);
 
   exit();
+  return 0;
 }
