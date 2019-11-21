@@ -532,16 +532,16 @@ shminit(void)
 	shmtable.initialized = 1;
 }
 
-struct shm_pg*
-allocnewpg(void)
-{
-	struct shm_pg *pg;
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-	{
-	//	if(pg->)
-	}
-
-}
+// struct shm_pg*
+// allocnewpg(void)
+// {
+// 	struct shm_pg *pg;
+// 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+// 	{
+// 	//	if(pg->)
+// 	}
+//
+// }
 
 int
 findpage(char* name)
