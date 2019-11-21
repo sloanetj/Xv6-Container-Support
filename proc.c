@@ -602,7 +602,7 @@ shmget(char* name)
 
 	cprintf("DID I GET HERE");
 
-	vas = mappage(pg);
+	//vas = mappage(pg);
 
 	//allocate page
 	// cprintf("HERE 1");
