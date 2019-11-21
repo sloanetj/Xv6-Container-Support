@@ -603,18 +603,21 @@ shmrem(char* name)
 	int ref_count = 0;
 
 	uint pg_num = findpage(name);
-
-	if(shmtable.pages[pg_num].ref_count > 0)
+  if(pg_num <= SHM_MAXNUM)
 	{
-		pg = &shmtable.pages[pg_num];
-		ref_count = shmpg_unmap(pg);
-		if(ref_count == 0)
+		if(shmtable.pages[pg_num].ref_count > 0)
 		{
-			kfree(pg->pa);
-			pg->pa = 0;
+			pg = &shmtable.pages[pg_num];
+			ref_count = shmpg_unmap(pg);
+			if(ref_count == 0)
+			{
+				kfree(pg->pa);
+				pg->pa = 0;
+			}
+			return ref_count;
 		}
-		return ref_count;
 	}
+
 
 	return NULL;
 }
