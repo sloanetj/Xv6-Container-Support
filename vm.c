@@ -27,7 +27,7 @@ shminit(void)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		pg->allocated = 0;
-		strncpy(pg->name, "test", 16);
+		pg->name = 0;
 		pg->pa = 0;
 		pg->ref_count = 0;
 	}
@@ -454,7 +454,6 @@ shmget(char* name)
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
-			cprintf("THE PROC IS  %d", myproc()->sz);
 			return vas;
 		}
 	}

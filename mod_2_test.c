@@ -19,6 +19,8 @@ main(void)
   //   exit();
   // }
   //wait();
-  printf(1,shared_memory_address1);
+  printf(1, shared_memory_address1);
+
+  printf(1,"HAHAHAHHAHHA\n");
   exit();
 }
