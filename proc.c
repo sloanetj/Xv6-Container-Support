@@ -523,13 +523,24 @@ shminit(void)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		pg->allocated = 0;
-		pg->name = "test";
-		pg->pa = "test";
-		pg->vas = "test";
+		pg->name = 0;//"test";
+		pg->pa = 0;//"test";
+		pg->vas = 0;//"test";
 		pg->ref_count = 0;
 	}
 
 	shmtable.initialized = 1;
+}
+
+struct shm_pg*
+allocnewpg(void)
+{
+	struct shm_pg *pg;
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	{
+	//	if(pg->)
+	}
+
 }
 
 int
@@ -578,11 +589,11 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		// pg->pa = kalloc();
-		// pg->name = name;
-		// pg->allocated = 1;
-		// memset(pg->pa, 0, 4096);
-		cprintf("LMAOOOOOOO");
+		pg->pa = kalloc();
+		pg->name = name;
+		pg->allocated = 1;
+		memset(pg->pa, 0, 4096);
+
 	}
 
 	vas = mappage(pg);
