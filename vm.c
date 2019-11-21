@@ -461,9 +461,10 @@ shmget(char* name)
 	//if name does not exist in table
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		cprintf("NEW");
 		if(pg->allocated == 0)
 		{
+			cprintf("HAHAHAHAH");
+
 			strncpy(pg->name, name, 50);
 			pg->allocated = 1;
 			pg->pa = kalloc();
