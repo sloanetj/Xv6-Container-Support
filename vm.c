@@ -450,6 +450,7 @@ shmget(char* name)
 
 		if(strncmp(pg->name, name,50) == 0)
 		{
+			cprintf("THEY MATCH");
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
