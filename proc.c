@@ -541,26 +541,12 @@ findpage(char* name)
 	{
 		if(strncmp(pg->name, name,200) == 0)
 		{
-			if(pg->allocated == 0)
+			if(!pg->allocated)
 			{
 				//allocate page
-				// pg->pa = kalloc();
-				// pg->allocated = 1;
-				// memset(pg->pa, 0, 4096);
-
-				//allocate page
-				cprintf("HERE 1");
 				pg->pa = kalloc();
-				cprintf("HERE 2");
-
-				pg->name = name;
-				cprintf("HERE 3");
-
 				pg->allocated = 1;
-				cprintf("HERE 4");
-
 				memset(pg->pa, 0, 4096);
-				cprintf("HERE 5");
 			}
 			return pg_num;
 		}
@@ -591,13 +577,29 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		pg->pa = kalloc();
-		pg->name = name;
-		pg->allocated = 1;
-		memset(pg->pa, 0, 4096);
+		// pg->pa = kalloc();
+		// pg->name = name;
+		// pg->allocated = 1;
+		// memset(pg->pa, 0, 4096);
 	}
 
 	vas = mappage(pg);
+
+	cprintf("HEYYYYY");
+
+	//allocate page
+	// cprintf("HERE 1");
+	// pg->pa = kalloc();
+	// cprintf("HERE 2");
+	//
+	// pg->name = name;
+	// cprintf("HERE 3");
+	//
+	// pg->allocated = 1;
+	// cprintf("HERE 4");
+	//
+	// memset(pg->pa, 0, 4096);
+	// cprintf("HERE 5");
 
 	return vas;
 }
