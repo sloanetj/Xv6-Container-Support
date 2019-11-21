@@ -601,9 +601,8 @@ shmget(char* name)
 	}
 
 
-	vas = mappage(pg);
+	vas = pg->pa//mappage(pg);
 
-	cprintf("DID I GET HERE");
 
 
 	//allocate page
