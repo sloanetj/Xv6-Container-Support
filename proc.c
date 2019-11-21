@@ -523,25 +523,32 @@ shminit(void)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		pg->allocated = 0;
-		pg->name = 0;//"test";
-		pg->pa = 0;//"test";
-		pg->vas = 0;//"test";
+		pg->name = 0;
+		pg->pa = 0;
+		pg->vas = 0;
 		pg->ref_count = 0;
 	}
 
 	shmtable.initialized = 1;
 }
 
-// struct shm_pg*
-// allocnewpg(void)
-// {
-// 	struct shm_pg *pg;
-// 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-// 	{
-// 	//	if(pg->)
-// 	}
-//
-// }
+struct shm_pg*
+allocnewpg(char* name)
+{
+	struct shm_pg *pg;
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	{
+		if(pg->pa == 0)
+		{
+			strncpy(pg->name, name, 50);
+			pg->pa = kalloc();
+			pg->allocated = 1;
+			memset(pg->pa, 0, 4096);
+			return pg;
+		}
+	}
+	return NULL; //error
+}
 
 int
 findpage(char* name)
@@ -550,7 +557,7 @@ findpage(char* name)
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		if(strncmp(pg->name, name,200) == 0)
+		if(strncmp(pg->name, name,50) == 0)
 		{
 			if(!pg->allocated)
 			{
@@ -589,10 +596,7 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		// pg->pa = kalloc();
-		// pg->name = name;
-		// pg->allocated = 1;
-		// memset(pg->pa, 0, 4096);
+		pg = allocnewpg(name);
 
 	}
 
