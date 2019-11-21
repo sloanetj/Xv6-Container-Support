@@ -523,9 +523,9 @@ shminit(void)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 		pg->allocated = 0;
-		pg->name = NULL;
-		pg->pa = NULL;
-		pg->vas = NULL;
+		pg->name = "test";
+		pg->pa = "test";
+		pg->vas = "test";
 		pg->ref_count = 0;
 	}
 
