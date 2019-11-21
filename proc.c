@@ -547,8 +547,8 @@ findpage(char* name)
 				pg->pa = kalloc();
 				pg->allocated = 1;
 				memset(pg->pa, 0, PGSIZE);
-				return pg_num;
 			}
+			return pg_num;
 		}
 		pg_num++;
 	}
@@ -582,6 +582,7 @@ shmget(char* name)
 		// pg->name = name;
 		// pg->allocated = 1;
 		// memset(pg->pa, 0, 4096);
+		cprintf("LMAOOOOOOO");
 	}
 
 	vas = mappage(pg);
