@@ -1,4 +1,4 @@
-#define SHM_MAXNUM  32  //max shared memory
+#define SHM_MAXNUM  64  //max shared memory
 #define NULL  0  //max shared memory
 
 struct shm_pg{
