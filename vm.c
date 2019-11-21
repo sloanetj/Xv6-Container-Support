@@ -454,7 +454,7 @@ shmget(char* name)
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
-			cprintf("THE PROC IS  %d   ", myproc()->sz);
+			cprintf("THEY MATCHED");
 			return vas;
 		}
 	}
