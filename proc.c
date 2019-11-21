@@ -600,9 +600,11 @@ shmget(char* name)
 
 	}
 
-	cprintf(pg->name);
 
-	//vas = mappage(pg);
+	vas = mappage(pg);
+
+	cprintf("DID I GET HERE");
+
 
 	//allocate page
 	// cprintf("HERE 1");
