@@ -190,7 +190,7 @@ int    copyout(pde_t *, uint, void *, uint);
 void   clearpteu(pde_t *pgdir, char *uva);
 char*  mappage(struct shm_pg *pg);
 int    shmpg_unmap(struct shm_pg *pg);
-int    mappages(pde_t *, void *, uint, uint, int);
+static int    mappages(pde_t *, void *, uint, uint, int);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x) / sizeof((x)[0]))
