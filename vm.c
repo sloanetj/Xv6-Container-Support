@@ -447,11 +447,9 @@ shmget(char* name)
 	//see if the name already exists in the table
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		cprintf("GOING THROUGH IT");
 
 		if(strncmp(pg->name, name,50) == 0)
 		{
-			cprintf("NOOO MATCH");
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
@@ -460,10 +458,10 @@ shmget(char* name)
 		}
 	}
 
-	cprintf("TIME TO MAKE NEW");
 	//if name does not exist in table
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
+		cprintf("NEW");
 		if(pg->allocated == 0)
 		{
 			strncpy(pg->name, name, 50);
