@@ -379,12 +379,13 @@ mappage(struct shm_pg *pg)
 	char *vas = 0;
 	char* base = (char*)KERNBASE - 4096;
 
-	cprintf("DID I MAKE IT HEREEEE");
 	int pg_num = findpagevm(pg);
 
 	//if page elready exists
 	if(pg_num >= 0)
 	{
+		cprintf("DID I MAKE IT HEREEEE?????????????????????????");
+
 		return (char*)(base - 4096);
 	}
 	else
