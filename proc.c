@@ -541,17 +541,14 @@ findpage(char* name)
 	{
 		if(strncmp(pg->name, name,200) == 0)
 		{
-			cprintf("LMAO");
 			if(!pg->allocated)
 			{
-				cprintf("NOT ALL");
-
 				//allocate page
 				pg->pa = kalloc();
 				pg->allocated = 1;
-				memset(pg->pa, 0, 4096);
+				memset(pg->pa, 0, PGSIZE);
+				return pg_num;
 			}
-			return pg_num;
 		}
 		pg_num++;
 	}
