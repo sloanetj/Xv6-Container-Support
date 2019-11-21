@@ -450,12 +450,11 @@ shmget(char* name)
 
 		if(strncmp(pg->name, name,50) == 0)
 		{
-			// mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			cprintf("THEY MAPPED  %d   ",			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U));
-
+			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
+			cprintf("THE VAS IS  %s", vas);
 			return vas;
 		}
 	}
