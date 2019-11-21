@@ -542,9 +542,17 @@ allocnewpg(char* name)
 		if(pg->pa == 0)
 		{
 			strncpy(pg->name, name, 50);
+			cprintf("HERE 1");
+
 			pg->pa = kalloc();
+			cprintf("HERE 2");
+
 			pg->allocated = 1;
+			cprintf("HERE 3");
+
 			memset(pg->pa, 0, 4096);
+			cprintf("HERE 4");
+
 			return 1;
 		}
 	}
