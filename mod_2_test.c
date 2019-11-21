@@ -7,7 +7,7 @@
 int
 main(void)
 {
-  printf("START OF MAIN\n");
+  printf(1, "START OF MAIN\n");
   char* shared_memory_address1 = shm_get("test");
 
   // int test = 1;
