@@ -532,8 +532,7 @@ shminit(void)
 	shmtable.initialized = 1;
 }
 
-//struct shm_pg*
-int
+struct shm_pg*
 allocnewpg(char* name)
 {
 	struct shm_pg *pg;
@@ -542,21 +541,13 @@ allocnewpg(char* name)
 		if(pg->pa == 0)
 		{
 			strncpy(pg->name, name, 50);
-			cprintf("HERE 1");
-
 			pg->pa = kalloc();
-			cprintf("HERE 2");
-
 			pg->allocated = 1;
-			cprintf("HERE 3");
-
 			memset(pg->pa, 0, 4096);
-			cprintf("HERE 4");
-
-			return 1;
+			return pg;
 		}
 	}
-	return -4; //error
+	return NULL; //error
 }
 
 int
@@ -605,7 +596,7 @@ shmget(char* name)
 	else
 	{
 		//allocate page
-		cprintf(" NEW PG: %d   ",allocnewpg(name));
+		pg = allocnewpg(name);
 
 	}
 
