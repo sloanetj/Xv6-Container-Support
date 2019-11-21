@@ -536,11 +536,10 @@ int
 findpage(char* name)
 {
 	struct shm_pg *pg;
-	cprintf("INIT???: %d", shmtable.initialized);
 	int pg_num = 0;
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
-		//cprintf("HAHAHHA");
+		cprintf("HAHAHHA");
 		// if(strncmp(pg->name, name,200) == 0)
 		// {
 		// 	cprintf("LOL");
