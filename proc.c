@@ -597,7 +597,7 @@ shmget(char* name)
 	{
 		//allocate page
 		pg = allocnewpg(name);
-		cprintf("ALLOCATED??  %d   ", pg->pa);
+		cprintf("ALLOCATED??  %s   ", pg->pa);
 	}
 
 
