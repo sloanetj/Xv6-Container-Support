@@ -525,7 +525,6 @@ shminit(void)
 		pg->allocated = 0;
 		pg->name = 0;
 		pg->pa = 0;
-		pg->vas = 0;
 		pg->ref_count = 0;
 	}
 
