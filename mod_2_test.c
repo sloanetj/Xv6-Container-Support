@@ -8,7 +8,7 @@ int
 main(void)
 {
   printf(1, "START OF MAIN\n");
-  shm_get("test");
+  char* shared_memory_address1 = shm_get("test");
 
   // int test = 1;
   // *shared_memory_address1 = test;
@@ -20,6 +20,7 @@ main(void)
   // }
   //wait();
 
+  printf(1, *shared_memory_address1);
   printf(1, "END OF MAIN\n");
   exit();
 }
