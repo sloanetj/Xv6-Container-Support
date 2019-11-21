@@ -450,8 +450,8 @@ shmget(char* name)
 
 		if(strncmp(pg->name, name,50) == 0)
 		{
-			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			cprintf("THEY MAPPED");
+			// mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+			cprintf("THEY MAPPED  %d   ",			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U));
 
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
