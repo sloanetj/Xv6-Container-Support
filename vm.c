@@ -518,19 +518,19 @@ shmget(char* name)
 	// return vas;
 }
 
-int
-shmpg_unmap(struct shm_pg *pg)
-{
-	struct proc *p = myproc();
-
-	int pg_num = findpagevm(pg);
-
-	p->shmpgs[pg_num] = 0;
-
-	//char *vas = (char*)((KERNBASE - 4096) - (pg_num*4096));
-
-	return --pg->ref_count;
-}
+// int
+// shmpg_unmap(struct shm_pg *pg)
+// {
+// 	struct proc *p = myproc();
+//
+// 	int pg_num = findpagevm(pg);
+//
+// 	p->shmpgs[pg_num] = 0;
+//
+// 	//char *vas = (char*)((KERNBASE - 4096) - (pg_num*4096));
+//
+// 	return --pg->ref_count;
+// }
 
 
 // PAGEBREAK!
