@@ -21,4 +21,5 @@ main(void)
   //wait();
   printf(1,shared_memory_address1);
   exit();
+  exit();
 }
