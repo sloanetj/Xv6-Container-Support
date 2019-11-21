@@ -564,7 +564,7 @@ shmget(char* name)
 		shminit();
 	}
 
-	char *vas = NULL;
+	char *vas = 145;
 	struct shm_pg *pg = NULL;
 
 
