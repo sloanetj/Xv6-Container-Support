@@ -510,7 +510,7 @@ shmrem(char* name)
 		if(strncmp(pg->name, name,sizeof(name)) == 0)
 		{
 			myproc()->shmpgs[pg_num] = 0;
-			pg->ref_count--;
+			//pg->ref_count--;
 
 			if(pg->ref_count == 0)
 			{
