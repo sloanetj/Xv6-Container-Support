@@ -478,46 +478,7 @@ shmget(char* name)
 	// 	}
 	// }
 
-	return "HAHHHHHHHH LMAO";
-
-	// char *vas = NULL;
-	// struct shm_pg *pg = NULL;
- //
- //
-	// int page_num = findpage(name);
- //
- // cprintf("PAGE NUM: %d     ", page_num);
-	// if(page_num >= 0)
-	// {
-	// 	pg = &shmtable.pages[page_num];
-	// }
-	// else
-	// {
-	// 	//allocate page
-	// 	pg = allocnewpg(name);
- //
-	// }
- //
- //
-	// vas = mappage(pg);
- //
- //
- //
-	// //allocate page
-	// // cprintf("HERE 1");
-	// // pg->pa = kalloc();
-	// // cprintf("HERE 2");
-	// //
-	// // pg->name = name;
-	// // cprintf("HERE 3");
-	// //
-	// // pg->allocated = 1;
-	// // cprintf("HERE 4");
-	// //
-	// // memset(pg->pa, 0, 4096);
-	// // cprintf("HERE 5");
- //
-	// return vas;
+	return name;
 }
 
 // int
