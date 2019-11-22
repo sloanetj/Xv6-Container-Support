@@ -443,12 +443,13 @@ shmget(char* name)
 
 	struct shm_pg *pg;
 	char* vas = NULL;
+	int pg_num = 0;
 
 	//see if the name already exists in the table
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 
-		if(strncmp(pg->name, name,50) == 0)
+		if(strncmp(pg->name, name,sizeof(name)) == 0)
 		{
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			pg->ref_count++;
@@ -459,7 +460,7 @@ shmget(char* name)
 	}
 
 	//if name does not exist in table
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
 	{
 		if(pg->allocated == 0)
 		{
@@ -472,6 +473,7 @@ shmget(char* name)
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
+			myproc()->shmpgs[pg_num] = pg;
 			return (char*)vas;
 		}
 	}
@@ -496,10 +498,30 @@ shmget(char* name)
 int
 shmrem(char* name)
 {
-	// struct shm_pg *pg;
-	//
-	// int ref_count = 0;
-	//
+	struct shm_pg *pg;
+
+	int ref_count = 0;
+
+	int pg_num = 0;
+
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
+	{
+
+		if(strncmp(pg->name, name,sizeof(name)) == 0)
+		{
+			myproc()->shmpgs[pg_num] = 0;
+			pg->ref_count--;
+
+			if(pg->ref_count == 0)
+			{
+				kfree(pg->pa);
+				pg->pa = 0;
+			}
+
+			return ref_count;
+		}
+	}
+
 	// uint pg_num = findpage(name);
   // if(pg_num <= SHM_MAXNUM)
 	// {
