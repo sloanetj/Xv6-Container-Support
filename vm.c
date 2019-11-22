@@ -474,6 +474,7 @@ shmget(char* name)
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
+
 			return (char*)vas;
 		}
 	}
@@ -515,7 +516,6 @@ shmrem(char* name)
 				kfree(pg->pa);
 				pg->pa = 0;
 			}
-			cprintf("   %d   ",pg->ref_count);
 			return pg->ref_count;
 		}
 	}
