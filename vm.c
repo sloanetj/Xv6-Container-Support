@@ -478,7 +478,7 @@ shmget(char* name)
 	// 	}
 	// }
 
-	return name;
+	return "HAHHHHHHHH LMAO";
 }
 
 // int
