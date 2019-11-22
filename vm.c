@@ -516,7 +516,7 @@ shmrem(char* name)
 				pg->pa = 0;
 			}
 			cprintf("   %d   ",pg->ref_count);
-			return ref_count;
+			return pg->reg_count;
 		}
 	}
 
