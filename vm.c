@@ -517,7 +517,7 @@ shmrem(char* name)
 				kfree(pg->pa);
 				pg->pa = 0;
 			}
-			cprintf(ref_count);
+			cprintf("   %d   ",ref_count);
 			return ref_count;
 		}
 	}
