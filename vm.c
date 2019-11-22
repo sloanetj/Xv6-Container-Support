@@ -436,49 +436,49 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 char*
 shmget(char* name)
 {
-	if(shmtable.initialized == 0)
-	{
-		shminit();
-	}
+	// if(shmtable.initialized == 0)
+	// {
+	// 	shminit();
+	// }
+	//
+	// struct shm_pg *pg;
+	// char* vas = NULL;
+	//
+	// //see if the name already exists in the table
+	// for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	// {
+	//
+	// 	if(strncmp(pg->name, name,50) == 0)
+	// 	{
+	// 		mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+	// 		pg->ref_count++;
+	// 		vas = (char*)PGROUNDUP(myproc()->sz);
+	// 		myproc()->sz += PGSIZE;
+	// 		return vas;
+	// 	}
+	// }
+	//
+	// //if name does not exist in table
+	// for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	// {
+	// 	if(pg->allocated == 0)
+	// 	{
+	// 		// strncpy(pg->name, name, 50);
+	// 		// pg->allocated = 1;
+	// 		// pg->pa = kalloc();
+	// 		// pg->ref_count = 1;
+	// 		// memset(pg->pa, 0, PGSIZE);
+	// 		// mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+	// 		// vas = (char*)PGROUNDUP(myproc()->sz);
+	// 		// myproc()->sz += PGSIZE;
+	//
+	//
+	// 		cprintf("THEY DID NOT MATCH");
+	// 		return "hahahhaha";
+	// 	}
+	// }
 
-	struct shm_pg *pg;
-	char* vas = NULL;
-
-	//see if the name already exists in the table
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-	{
-
-		if(strncmp(pg->name, name,50) == 0)
-		{
-			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			pg->ref_count++;
-			vas = (char*)PGROUNDUP(myproc()->sz);
-			myproc()->sz += PGSIZE;
-			return vas;
-		}
-	}
-
-	//if name does not exist in table
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
-	{
-		if(pg->allocated == 0)
-		{
-			// strncpy(pg->name, name, 50);
-			// pg->allocated = 1;
-			// pg->pa = kalloc();
-			// pg->ref_count = 1;
-			// memset(pg->pa, 0, PGSIZE);
-			// mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			// vas = (char*)PGROUNDUP(myproc()->sz);
-			// myproc()->sz += PGSIZE;
-
-
-			cprintf("THEY DID NOT MATCH");
-			return "hahahhaha";
-		}
-	}
-
-	return NULL;
+	return "HAHHHHHHHH LMAO";
 
 	// char *vas = NULL;
 	// struct shm_pg *pg = NULL;
