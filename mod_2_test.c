@@ -22,6 +22,8 @@ main(void)
   // }
   //wait();
    printf(1,shared_memory_address1);
+
+   shm_rem("test");
    printf(1, " MADE IT\n");
   exit();
 }
