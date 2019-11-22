@@ -472,7 +472,7 @@ shmget(char* name)
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
-			cprintf(vas);
+			cprintf("lol  %d  ", vas);
 			return name;
 		}
 	}
