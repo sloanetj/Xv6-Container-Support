@@ -22,8 +22,7 @@ printf(1, "HAHAHAHAHAHA\n");
   //   exit();
   // }
   //wait();
-  printf(1,"VAS %x     ", shared_memory_address1);
-  printf(1, "MADE IT\n");
+  //printf(1,"VAS %x     ", shared_memory_address1);
   exit();
-  return 0;
+  //return 0;
 }
