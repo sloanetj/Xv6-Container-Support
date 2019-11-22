@@ -474,7 +474,7 @@ shmget(char* name)
 
 
 			cprintf("THEY DID NOT MATCH");
-			return vas;
+			return "hahahhaha";
 		}
 	}
 
