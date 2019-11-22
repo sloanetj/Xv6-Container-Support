@@ -204,11 +204,11 @@ fork(void)
 
 	for(int i = 0; i < SHM_MAXNUM; i++)
 	{
-		if(curproc->shmpages[i] != 0)
+		if(curproc->shmpgs[i] != 0)
 		{
-			if((curproc->shmpages[i] > 0) && (curproc->shmpages[i]->ref_count < SHM_MAXNUM))
+			if((curproc->shmpgs[i] > 0) && (curproc->shmpgs[i]->ref_count < SHM_MAXNUM))
 			{
-				//TODO: 
+				//TODO:
 			}
 		}
 	}
