@@ -9,9 +9,9 @@ main(void)
 {
 
 
-  //char* shared_memory_address1 = shm_get("test");
+  char* shared_memory_address1 = shm_get("test");
 
-  shm_get("test");
+  //shm_get("test");
 
   // int test = 1;
   // *shared_memory_address1 = test;
@@ -22,7 +22,7 @@ main(void)
   //   exit();
   // }
   //wait();
-  printf(1,shared_memory_address1);
+  printf(1,"VAS %x     ", shared_memory_address1);
   printf(1, "MADE IT\n");
   exit();
   return 0;
