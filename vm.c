@@ -500,8 +500,6 @@ shmrem(char* name)
 {
 	struct shm_pg *pg;
 
-	int ref_count = 0;
-
 	int pg_num = 0;
 
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
@@ -517,7 +515,7 @@ shmrem(char* name)
 				kfree(pg->pa);
 				pg->pa = 0;
 			}
-			cprintf("   %d   ",ref_count);
+			cprintf("   %d   ",pg->ref_count);
 			return ref_count;
 		}
 	}
