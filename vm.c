@@ -473,7 +473,7 @@ shmget(char* name)
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
 			cprintf("lol  %d  ", vas);
-			return name;
+			return (char*)vas;
 		}
 	}
 
