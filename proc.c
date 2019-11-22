@@ -200,6 +200,19 @@ fork(void)
 		np->state  = UNUSED;
 		return -1;
 	}
+
+
+	for(int i = 0; i < SHM_MAXNUM; i++)
+	{
+		if(curproc->shmpages[i] != 0)
+		{
+			if((curproc->shmpages[i] > 0) && (curproc->shmpages[i]->ref_count < SHM_MAXNUM))
+			{
+				//TODO: 
+			}
+		}
+	}
+
 	np->sz     = curproc->sz;
 	np->parent = curproc;
 	*np->tf    = *curproc->tf;
@@ -680,7 +693,7 @@ procdump(void)
 // 			return ref_count;
 // 		}
 // 	}
-// 
+//
 //
 // 	return NULL;
 // }
