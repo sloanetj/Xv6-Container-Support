@@ -21,6 +21,7 @@ main(void)
   //   exit();
   // }
   //wait();
-   printf(1,"VAS %s     ", shared_memory_address1);
+   printf(1,shared_memory_address1);
+   printf(1, " MADE IT\n");
   exit();
 }
