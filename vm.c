@@ -467,10 +467,10 @@ shmget(char* name)
 			pg->allocated = 1;
 			pg->pa = kalloc();
 			pg->ref_count = 1;
-			memset(pg->pa, 0, PGSIZE);
-			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			vas = (char*)PGROUNDUP(myproc()->sz);
-			myproc()->sz += PGSIZE;
+			// memset(pg->pa, 0, PGSIZE);
+			// mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+			// vas = (char*)PGROUNDUP(myproc()->sz);
+			// myproc()->sz += PGSIZE;
 
 
 			cprintf("THEY DID NOT MATCH");
