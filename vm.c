@@ -472,8 +472,6 @@ shmget(char* name)
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
 
-			cprintf("THEY DID NOT MATCH");
-
 			return vas;
 		}
 	}
