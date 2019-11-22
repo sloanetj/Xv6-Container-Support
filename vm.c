@@ -463,7 +463,7 @@ shmget(char* name)
 	{
 		if(pg->allocated == 0)
 		{
-			// strncpy(pg->name, name, 50);
+			strncpy(pg->name, name, 50);
 			// pg->allocated = 1;
 			// pg->pa = kalloc();
 			// pg->ref_count = 1;
