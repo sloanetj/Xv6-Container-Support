@@ -1,4 +1,6 @@
 #include "mutex.h"
+#include "pqueue.h"
+
 
 /* mutex contains the name given at creation, and the state of the mutex: 
 1 if taken, 0 if not taken. Additionally, each mutex has a condition variable
@@ -17,8 +19,6 @@ struct mutex_table {
 	struct mutex muxes[MUX_MAXNUM];
 };
 struct mutex_table MUTEXES;
-
-
 
 // Per-CPU state
 struct cpu {
@@ -89,6 +89,10 @@ struct proc {
 	0 (null). */
 	struct mutex *	  mux_ptrs[MUX_MAXNUM];	
 
+	// priority of proccess, range 0-PRIO_MAX
+	uint priority;
+	
+
 
 };
 
@@ -97,6 +101,7 @@ struct proc {
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+
 
 
 /* wait queue used for unblocking processes waiting to take a mutex, really just an 
@@ -112,3 +117,4 @@ struct {
 	struct spinlock lock;
 	struct proc     proc[NPROC];
 } ptable;
+

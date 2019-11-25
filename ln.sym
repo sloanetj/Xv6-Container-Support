@@ -14,7 +14,7 @@
 00000000 ulib.c
 00000000 printf.c
 00000390 printint
-000007b8 digits.1056
+000007b8 digits.1059
 00000000 umalloc.c
 00000a60 freep
 00000a64 base
@@ -34,6 +34,7 @@
 0000030a fstat
 000002e2 kill
 00000322 chdir
+00000382 prio_set
 000002ea exec
 000002ba wait
 000002ca read

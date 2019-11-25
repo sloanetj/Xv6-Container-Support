@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 sh.c
-000018c0 buf.1094
+000018c0 buf.1097
 00000000 ulib.c
 00000000 printf.c
 00000df0 printint
-000012d8 digits.1056
+000012d8 digits.1059
 00000000 umalloc.c
 00001924 freep
 00001928 base
@@ -49,6 +49,7 @@
 00000d82 chdir
 00000870 parseline
 00000170 runcmd
+00000de2 prio_set
 00000910 parseblock
 00000d4a exec
 00000d1a wait

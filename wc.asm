@@ -736,10 +736,12 @@ SYSCALL(signalcv)
  49a:	b8 1b 00 00 00       	mov    $0x1b,%eax
  49f:	cd 40                	int    $0x40
  4a1:	c3                   	ret    
- 4a2:	66 90                	xchg   %ax,%ax
- 4a4:	66 90                	xchg   %ax,%ax
- 4a6:	66 90                	xchg   %ax,%ax
- 4a8:	66 90                	xchg   %ax,%ax
+
+000004a2 <prio_set>:
+SYSCALL(prio_set)
+ 4a2:	b8 1c 00 00 00       	mov    $0x1c,%eax
+ 4a7:	cd 40                	int    $0x40
+ 4a9:	c3                   	ret    
  4aa:	66 90                	xchg   %ax,%ax
  4ac:	66 90                	xchg   %ax,%ax
  4ae:	66 90                	xchg   %ax,%ax

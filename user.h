@@ -29,6 +29,7 @@ int   mlock(int);
 int   munlock(int);
 int   waitcv(int);
 int   signalcv(int);
+int   prio_set(int, int);
 
 // ulib.c
 int   stat(char *, struct stat *);

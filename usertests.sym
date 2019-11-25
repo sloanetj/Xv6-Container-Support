@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 usertests.c
-00005e40 args.1420
+00005e40 args.1423
 00000000 ulib.c
 00000000 printf.c
 00003980 printint
-00005518 digits.1056
+00005518 digits.1059
 00000000 umalloc.c
 00005ec0 freep
 00005ec4 base
@@ -56,6 +56,7 @@
 00003150 validatetest
 000027e0 rmdot
 00003912 chdir
+00003972 prio_set
 000009c0 exectest
 000038da exec
 000038aa wait

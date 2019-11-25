@@ -325,3 +325,63 @@ sys_signalcv(int muxid){
 	return 1;
 }
 
+
+/* attempts to set the priority of the process identified by pid to priority. 
+The priority of the initial process was already set to 0 (highest priority), 
+and all child processes inherit the priority level of parent*/
+int 
+sys_prio_set(int pid, int priority){
+
+	argint(0,(int*)&pid);	
+	argint(1,(int*)&priority);
+	struct proc *curproc = myproc();
+	struct proc *p;
+
+	//temporarily
+	//cprintf("%d\n", curproc->priority);
+
+	if (priority >= PRIO_MAX){
+		// invalid priority
+		return -1;
+	}
+
+	// quick-exit case 1: process is trying to set priority above its own
+	if (priority < curproc->priority){
+		return -1;
+	}
+	// quick-exit case 2: pid refers to this process
+	if (curproc->pid == pid){
+		curproc->priority = priority;
+		return 1;
+	}
+
+
+	// validate that the pid process is in ancestry of current process:
+	// search through proc table until we find process with pid
+	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+		if (p != curproc && p->pid == pid){
+			break;
+		}
+	}
+	if (p >= &ptable.proc[NPROC]){
+		// this pid doesnt exist
+		return -1;
+	}
+	// search down it's parent links until we either find the current proc, or we reach pid <= 1
+	int found = 0;
+	struct proc *i = p->parent;
+	while (i->pid > 1){
+		if (i == curproc){
+			found = 1;
+			break;
+		}
+		i = i->parent;
+	}
+	if (found){
+		p->priority = priority;
+	} else{
+		// this process is not in your ancestry
+		return -1;
+	}
+	return 1;
+}

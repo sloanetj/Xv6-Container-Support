@@ -128,6 +128,8 @@ found:
 	INITIALIZE WAIT QUEUE TO NULL
 	INIT MUTEX TABLE LOCK
 	INIT WAIT QUEUE LOCK
+
+	SET PRIORITY OF FIRST PROCESS TO 0 (HIGHEST PRIORITY)
 */
 void
 userinit(void)
@@ -152,6 +154,11 @@ userinit(void)
 
 	safestrcpy(p->name, "initcode", sizeof(p->name));
 	p->cwd = namei("/");
+
+
+	// set first process to highest priority
+	p->priority = 0;
+
 
 	// this assignment to p->state lets other cores
 	// run this process. the acquire forces the above
@@ -206,7 +213,8 @@ growproc(int n)
 // Sets up stack to return as if from system call.
 // Caller must set state of returned proc to RUNNABLE.
 
-// MODIED TO PASS MUTEX ACCESS FROM PARENT TO CHILD
+// MODIFIED TO PASS MUTEX ACCESS FROM PARENT TO CHILD
+// MODIFIED TO PASS PRIORITY LEVEL TO CHILD
 int
 fork(void)
 {
@@ -250,6 +258,9 @@ fork(void)
 	// child inherets mutex ownership from parent
 	for(i=0; i<MUX_MAXNUM; i++)
 		np->mux_ptrs[i] = curproc->mux_ptrs[i];
+
+	// child inherets priority from parent
+	np->priority = curproc->priority;
 
 
 	return pid;
@@ -544,4 +555,82 @@ procdump(void)
 		}
 		cprintf("\n");
 	}
+}
+
+
+// HELPER FUNCTIONS USED BY SCHEDULER
+
+// boolean indicator telling kernel if it needs to intitialize these data structures - used for first time setup
+int pqueue_ready = 0;
+
+// head and tail indicies for each queue
+// head_tail[0] = head
+// head_tail[1] = tail
+int head_tail[PRIO_MAX][2];
+
+// array of priority queues, where each sub-array is a queue of same-priority procs
+struct proc *pqueues[PRIO_MAX][QSIZE];
+
+
+void
+pqueues_setup(){
+	// initialize all pqueues to empty
+	int i, j;
+	for (i=0; i<PRIO_MAX; i++){
+		for (j=0; j<2; j++){
+			head_tail[i][j] = 0;
+		}
+	}
+}
+
+int 
+pq_enqueue (struct proc *p){
+
+	// first-time setup if necessary
+	if (!pqueue_ready){
+		pqueues_setup();
+		pqueue_ready = 1;
+	}
+
+	int priority = p->priority;
+	int head = head_tail[priority][0];
+	int tail = head_tail[priority][1];
+
+	if (tail == (head-1)%QSIZE){
+		// queue is full
+		return 0;
+	}
+
+	//update tail
+	pqueues[priority][tail] =  p;
+	head_tail[priority][1] = (tail+1)%QSIZE;
+	return 1;
+}
+
+struct proc*
+pq_dequeue(){
+
+	// first-time setup if necessary
+	if (!pqueue_ready){
+		pqueues_setup();
+		pqueue_ready = 1;
+	}
+
+	// go to highest priority, non-empty queue 
+	int priority = 0;
+	while (head_tail[priority][0] == head_tail[priority][1])	// queue is empty if head == tail
+		priority++;
+
+	if (priority == PRIO_MAX){
+		// all queues are empty
+		return 0;
+	}
+
+	// get proc
+	int head = head_tail[priority][0];
+	struct proc *p = pqueues[priority][head];
+
+	// update head
+	head_tail[priority][0] = (head+1)%QSIZE;
+	return p;
 }

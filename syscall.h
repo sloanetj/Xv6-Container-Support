@@ -26,4 +26,5 @@
 #define SYS_munlock 25
 #define SYS_waitcv 26
 #define SYS_signalcv 27
+#define SYS_prio_set 28
 

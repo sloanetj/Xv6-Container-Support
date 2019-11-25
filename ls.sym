@@ -11,11 +11,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 ls.c
-00000dcc buf.1067
+00000dcc buf.1070
 00000000 ulib.c
 00000000 printf.c
 00000660 printint
-00000aac digits.1056
+00000aac digits.1059
 00000000 umalloc.c
 00000ddc freep
 00000de0 base
@@ -36,6 +36,7 @@
 000005da fstat
 000005b2 kill
 000005f2 chdir
+00000652 prio_set
 000005ba exec
 0000058a wait
 0000059a read
