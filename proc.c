@@ -7,6 +7,8 @@
 #include "proc.h"
 
 // ptable moved to proc.h
+int pq_enqueue(struct proc *p);
+struct proc* pq_dequeue();
 
 static struct proc *initproc;
 
@@ -122,7 +124,7 @@ found:
 
 // PAGEBREAK: 32
 // Set up first user process.
-
+int pqueue_ready = 0;
 /* MODIFIED TO: 
 	INITIALIZE GLOBAL MUTEX TABLE TO EMPTY MUTEXES  
 	INITIALIZE WAIT QUEUE TO NULL
@@ -130,6 +132,7 @@ found:
 	INIT WAIT QUEUE LOCK
 
 	SET PRIORITY OF FIRST PROCESS TO 0 (HIGHEST PRIORITY)
+	INITIALIZE PQUEUE DATA STRUCTURES TO 0
 */
 void
 userinit(void)
@@ -156,17 +159,31 @@ userinit(void)
 	p->cwd = namei("/");
 
 
-	// set first process to highest priority
-	p->priority = 0;
-
-
+	acquire(&ptable.lock);
+	if (!pqueue_ready){
+		pqueue_ready = 1;
+		// set first process to highest priority
+		p->priority = 0;
+		// initialize all pqueues to empty
+		int m, n;
+		for (m=0; m<PRIO_MAX; m++){
+			for (n=0; n<2; n++){
+				ptable.head_tail[m][n] = 0;
+			}
+		}
+	}
+	
 	// this assignment to p->state lets other cores
 	// run this process. the acquire forces the above
 	// writes to be visible, and the lock is also needed
 	// because the assignment might not be atomic.
-	acquire(&ptable.lock);
+	//acquire(&ptable.lock);
 
 	p->state = RUNNABLE;
+	if (pq_enqueue(p) < 0){
+		// queue is full
+		panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+	}
 
 	release(&ptable.lock);
 
@@ -252,7 +269,10 @@ fork(void)
 	acquire(&ptable.lock);
 
 	np->state = RUNNABLE;
-
+	if (pq_enqueue(np) < 0){
+		// queue is full
+		panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+	}
 	release(&ptable.lock);
 
 	// child inherets mutex ownership from parent
@@ -361,35 +381,63 @@ wait(void)
 //  - swtch to start running that process
 //  - eventually that process transfers control
 //      via swtch back to the scheduler.
+int first_time = 1;
+// MODIFIED TO SELECT PROCESS FROM PQUEUE INSTEAD OF PTABLE
 void
 scheduler(void)
 {
+	//cprintf("process at pqueue head = %x\n",ptable.pqueues[0][0]);
 	struct proc *p;
 	struct cpu * c = mycpu();
-	c->proc        = 0;
+	c->proc = 0;
+
 
 	for (;;) {
 		// Enable interrupts on this processor.
 		sti();
 
-		// Loop over process table looking for process to run.
 		acquire(&ptable.lock);
-		for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-			if (p->state != RUNNABLE) continue;
+		if (first_time){
+			first_time = 0;
+			for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+				if (p->state != RUNNABLE) continue;
 
-			// Switch to chosen process.  It is the process's job
-			// to release ptable.lock and then reacquire it
-			// before jumping back to us.
-			c->proc = p;
-			switchuvm(p);
-			p->state = RUNNING;
+				// Switch to chosen process. It is the process's job
+				// to release ptable.lock and then reacquire it
+				// before jumping back to us.
+				c->proc = p;
+				switchuvm(p);
+				p->state = RUNNING;
 
-			swtch(&(c->scheduler), p->context);
-			switchkvm();
+				swtch(&(c->scheduler), p->context);
+				switchkvm();
 
-			// Process is done running for now.
-			// It should have changed its p->state before coming back.
-			c->proc = 0;
+				// Process is done running for now.
+				// It should have changed its p->state before coming back.
+				c->proc = 0;
+			}
+		}
+		else{
+			// get proc by dequeueing from O(1) priority queue
+			p = pq_dequeue();
+			//cprintf("dequeued: %x\n", p);
+			while (p != NULL){
+				// Switch to chosen process. It is the process's job
+				// to release ptable.lock and then reacquire it
+				// before jumping back to us.
+				c->proc = p;
+				switchuvm(p);
+				p->state = RUNNING;
+
+				swtch(&(c->scheduler), p->context);
+				switchkvm();
+
+				// Process is done running for now.
+				// It should have changed its p->state before coming back.
+				c->proc = 0;
+
+				p = pq_dequeue();
+			}
 		}
 		release(&ptable.lock);
 	}
@@ -423,6 +471,10 @@ yield(void)
 {
 	acquire(&ptable.lock); // DOC: yieldlock
 	myproc()->state = RUNNABLE;
+	if (pq_enqueue(myproc()) < 0){
+		// queue is full
+		panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+	}
 	sched();
 	release(&ptable.lock);
 }
@@ -493,8 +545,15 @@ wakeup1(void *chan)
 {
 	struct proc *p;
 
-	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-		if (p->state == SLEEPING && p->chan == chan) p->state = RUNNABLE;
+	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+		if (p->state == SLEEPING && p->chan == chan){
+			p->state = RUNNABLE;
+			if (pq_enqueue(p) < 0){
+				// queue is full
+				panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+			}
+		}
+	}
 }
 
 // Wake up all processes sleeping on chan.
@@ -519,7 +578,13 @@ kill(int pid)
 		if (p->pid == pid) {
 			p->killed = 1;
 			// Wake process from sleep if necessary.
-			if (p->state == SLEEPING) p->state = RUNNABLE;
+			if (p->state == SLEEPING){
+				p->state = RUNNABLE;
+				if (pq_enqueue(p) < 0){
+					// queue is full
+					panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+				}
+			}
 			release(&ptable.lock);
 			return 0;
 		}
@@ -560,77 +625,48 @@ procdump(void)
 
 // HELPER FUNCTIONS USED BY SCHEDULER
 
-// boolean indicator telling kernel if it needs to intitialize these data structures - used for first time setup
-int pqueue_ready = 0;
-
-// head and tail indicies for each queue
-// head_tail[0] = head
-// head_tail[1] = tail
-int head_tail[PRIO_MAX][2];
-
-// array of priority queues, where each sub-array is a queue of same-priority procs
-struct proc *pqueues[PRIO_MAX][QSIZE];
-
-
-void
-pqueues_setup(){
-	// initialize all pqueues to empty
-	int i, j;
-	for (i=0; i<PRIO_MAX; i++){
-		for (j=0; j<2; j++){
-			head_tail[i][j] = 0;
-		}
-	}
-}
-
 int 
 pq_enqueue (struct proc *p){
 
-	// first-time setup if necessary
-	if (!pqueue_ready){
-		pqueues_setup();
-		pqueue_ready = 1;
+	if (!(p->state == RUNNABLE)){
+		// process must be runnable to be placed in queue
+		return -1;
 	}
-
+	
 	int priority = p->priority;
-	int head = head_tail[priority][0];
-	int tail = head_tail[priority][1];
+	int head = ptable.head_tail[priority][0];
+	int tail = ptable.head_tail[priority][1];
 
 	if (tail == (head-1)%QSIZE){
 		// queue is full
-		return 0;
+		return -1;
 	}
 
 	//update tail
-	pqueues[priority][tail] =  p;
-	head_tail[priority][1] = (tail+1)%QSIZE;
+	ptable.pqueues[priority][tail] =  p;
+	ptable.head_tail[priority][1] = (tail+1)%QSIZE;
 	return 1;
 }
 
 struct proc*
 pq_dequeue(){
 
-	// first-time setup if necessary
-	if (!pqueue_ready){
-		pqueues_setup();
-		pqueue_ready = 1;
-	}
-
 	// go to highest priority, non-empty queue 
 	int priority = 0;
-	while (head_tail[priority][0] == head_tail[priority][1])	// queue is empty if head == tail
+	while (priority < PRIO_MAX && ptable.head_tail[priority][0] == ptable.head_tail[priority][1])	// queue is empty if head == tail
 		priority++;
 
-	if (priority == PRIO_MAX){
+	if (priority >= PRIO_MAX){
 		// all queues are empty
-		return 0;
+		//cprintf("all queues are empty\n");
+		return NULL;
 	}
 
 	// get proc
-	int head = head_tail[priority][0];
-	struct proc *p = pqueues[priority][head];
+	int head = ptable.head_tail[priority][0];
+	struct proc *p = ptable.pqueues[priority][head];
 
 	// update head
-	head_tail[priority][0] = (head+1)%QSIZE;
+	ptable.head_tail[priority][0] = (head+1)%QSIZE;
 	return p;
 }

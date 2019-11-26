@@ -7,6 +7,9 @@
 #include "mmu.h"
 #include "proc.h"
 
+int pq_enqueue(struct proc *p);
+struct proc* pq_dequeue();
+
 int
 sys_fork(void)
 {
@@ -240,6 +243,10 @@ sys_munlock(int muxid){
 
 	acquire(&ptable.lock);
 	sleepy_proc->state = RUNNABLE;
+	if (pq_enqueue(sleepy_proc) < 0){
+		// queue is full
+		panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+	}
 	release(&ptable.lock);
 
 	return 1;
@@ -320,6 +327,10 @@ sys_signalcv(int muxid){
 	// wake up proc 
 	acquire(&ptable.lock);
 	sleepy_proc->state = RUNNABLE;
+	if (pq_enqueue(sleepy_proc) < 0){
+		// queue is full
+		panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+	}
 	release(&ptable.lock);
 
 	return 1;
@@ -358,6 +369,7 @@ sys_prio_set(int pid, int priority){
 
 	// validate that the pid process is in ancestry of current process:
 	// search through proc table until we find process with pid
+	acquire(&ptable.lock);
 	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++){
 		if (p != curproc && p->pid == pid){
 			break;
@@ -365,6 +377,7 @@ sys_prio_set(int pid, int priority){
 	}
 	if (p >= &ptable.proc[NPROC]){
 		// this pid doesnt exist
+		release(&ptable.lock);
 		return -1;
 	}
 	// search down it's parent links until we either find the current proc, or we reach pid <= 1
@@ -381,7 +394,56 @@ sys_prio_set(int pid, int priority){
 		p->priority = priority;
 	} else{
 		// this process is not in your ancestry
+		release(&ptable.lock);
 		return -1;
 	}
+	release(&ptable.lock);
 	return 1;
+}
+
+// user forks a bunch of children, sets varying priority levels, and calls this function for each of them
+void
+sys_testpqeq(){
+
+	acquire(&ptable.lock);
+	struct proc *p = myproc();
+	
+	int priority = p->priority;
+	char prio_char = (char)(priority+47);
+	p->name[0] = prio_char; 
+	p->name[1] = '\0';
+
+	// enqueue 
+	pq_enqueue(p);
+	release(&ptable.lock);
+
+
+
+}
+
+// after user enqueued a bunch of procs using the above function, dequeue them all and observe the order
+void
+sys_testpqdq(){
+
+	struct proc *p = pq_dequeue();
+	int count = 0;
+	while (count < 3){
+
+		if (p->name[0] == '1'){
+			cprintf("%s\n", p->name);
+			count++;
+		}
+		else if (p->name[0] == '2'){
+			cprintf("%s\n", p->name);
+			count++;
+		}
+		else if (p->name[0] == '3'){
+			cprintf("%s\n", p->name);
+			count++;
+		}
+
+		p = pq_dequeue();
+	}
+	
+	
 }

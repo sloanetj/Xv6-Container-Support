@@ -30,6 +30,8 @@ int   munlock(int);
 int   waitcv(int);
 int   signalcv(int);
 int   prio_set(int, int);
+void  testpqeq(void);
+void  testpqdq(void);
 
 // ulib.c
 int   stat(char *, struct stat *);

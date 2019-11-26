@@ -1,5 +1,5 @@
-#define PRIO_MAX 20
-#define QSIZE 100
+
+
 
 
 // // head and tail indicies for each queue
@@ -29,7 +29,7 @@
 // 	return 1;
 // }
 
-// struct proc *p
+// struct proc *
 // pq_dequeue(){
 // 	// go to highest priority, non-empty queue 
 // 	int priority = 0;

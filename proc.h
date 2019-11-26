@@ -1,5 +1,7 @@
 #include "mutex.h"
-#include "pqueue.h"
+#define PRIO_MAX 20
+#define QSIZE 100
+#define NULL ((void*)-1)
 
 
 /* mutex contains the name given at creation, and the state of the mutex: 
@@ -116,5 +118,13 @@ struct wait_queue wqueue;
 struct {
 	struct spinlock lock;
 	struct proc     proc[NPROC];
+
+	// head and tail indicies for each queue
+	// head_tail[0] = head
+	// head_tail[1] = tail
+	int head_tail[PRIO_MAX][2];
+
+	// array of priority queues, where each sub-array is a queue of same-priority procs
+	struct proc *pqueues[PRIO_MAX][QSIZE];
 } ptable;
 

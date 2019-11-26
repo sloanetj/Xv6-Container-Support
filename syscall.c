@@ -104,6 +104,8 @@ extern int sys_munlock(void);
 extern int sys_waitcv(void);
 extern int sys_signalcv(void);
 extern int sys_prio_set(void);
+extern int sys_testpqeq(void);
+extern int sys_testpqdq(void);
 
 
 static int (*syscalls[])(void) = {
@@ -114,6 +116,7 @@ static int (*syscalls[])(void) = {
   [SYS_mknod] sys_mknod, [SYS_unlink] sys_unlink, [SYS_link] sys_link,     [SYS_mkdir] sys_mkdir,
   [SYS_close] sys_close, [SYS_mcreate] sys_mcreate, [SYS_mdelete] sys_mdelete, [SYS_mlock] sys_mlock,
   [SYS_munlock] sys_munlock, [SYS_waitcv] sys_waitcv, [SYS_signalcv] sys_signalcv, [SYS_prio_set] sys_prio_set,
+  [SYS_testpqeq] sys_testpqeq, [SYS_testpqdq] sys_testpqdq,
 };
 
 void

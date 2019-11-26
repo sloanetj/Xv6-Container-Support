@@ -27,4 +27,6 @@
 #define SYS_waitcv 26
 #define SYS_signalcv 27
 #define SYS_prio_set 28
+#define SYS_testpqeq 29
+#define SYS_testpqdq 30
 
