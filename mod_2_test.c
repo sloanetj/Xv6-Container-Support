@@ -23,12 +23,11 @@ main(void)
   //wait();
    printf(1, "   %x     ", shared_memory_address1);
 
-   shm_rem("test");
-
-   
+   shm_rem("test3");
 
 
-   char* shared_memory_address2 = shm_get("test2");
+
+
 
 
     printf(1, "   %x     ", shared_memory_address2);
