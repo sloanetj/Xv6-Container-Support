@@ -201,25 +201,27 @@ fork(void)
 		return -1;
 	}
 
+	//
+	// for(int i = 0; i < SHM_MAXNUM; i++)
+	// {
+	// 	if(curproc->shmpgs[i] != 0)
+	// 	{
+	// 		if((curproc->shmpgs[i] > 0) && (curproc->shmpgs[i]->ref_count < SHM_MAXNUM))
+	// 		{
+	// 			//TODO:
+	//
+	// 			//LMAO
+	// 			/*
+	// 				iterate through shmtable, then like do it again but in the proc, check if proc name equals shmname and shm name is not null, then increase shm ref count++,
+	//
+	// 				for i from 0 to SHM_MAXNUM , np->pshm[i] == currproc->psh[i]
+	// 			*/
+	// 		}
+	// 	}
+	// }
 
-	for(int i = 0; i < SHM_MAXNUM; i++)
-	{
-		if(curproc->shmpgs[i] != 0)
-		{
-			if((curproc->shmpgs[i] > 0) && (curproc->shmpgs[i]->ref_count < SHM_MAXNUM))
-			{
-				//TODO:
-
-				//LMAO
-				/*
-					iterate through shmtable, then like do it again but in the proc, check if proc name equals shmname and shm name is not null, then increase shm ref count++,
-
-					for i from 0 to SHM_MAXNUM , np->pshm[i] == currproc->psh[i]
-				*/
-			}
-		}
-	}
-
+	struct shm_pg* pg;
+	
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 
