@@ -23,14 +23,14 @@ main(void)
   //wait();
    printf(1, "   %x     ", shared_memory_address1);
 
-   shm_rem("test3");
+   int ha = shm_rem("test3");
+
+
+   printf(1,  "   %d\n", ha);
 
 
 
-
-
-
-    printf(1, "   %x     ", shared_memory_address2);
+    // printf(1, "   %x     ", shared_memory_address2);
    //
    //  shm_rem("test2");
 
