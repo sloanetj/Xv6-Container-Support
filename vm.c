@@ -516,7 +516,6 @@ shmrem(char* name)
 				kfree(pg->pa);
 				pg->pa = 0;
 			}
-			cprintf("REMOVED");
 			return pg->ref_count;
 		}
 	}
