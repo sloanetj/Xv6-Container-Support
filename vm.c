@@ -502,6 +502,7 @@ shmrem(char* name)
 	struct shm_pg *pg;
 
 	int pg_num = 0;
+	cprintf(name);
 
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
 	{
