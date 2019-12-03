@@ -449,7 +449,8 @@ shmget(char* name)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
 	{
 
-		if(strncmp(pg->name, name,sizeof(name)) == 0)
+		//if(strncmp(pg->name, name,sizeof(name)) == 0)
+		if(pg->name == name)
 		{
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			pg->ref_count++;
