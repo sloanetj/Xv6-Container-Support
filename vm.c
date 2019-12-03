@@ -14,10 +14,7 @@ pde_t *     kpgdir; // for use in scheduler()
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
 
-struct {
-	uint initialized; //0 if not initialized, 1 if initialized
-	struct shm_pg pages[SHM_MAXNUM];
-} shmtable;
+
 
 void
 shminit(void)
@@ -516,6 +513,7 @@ shmrem(char* name)
 
 			if(pg->ref_count == 0)
 			{
+				pg->allocated = 0;
 				kfree(pg->pa);
 				pg->pa = 0;
 			}

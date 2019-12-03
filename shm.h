@@ -9,5 +9,10 @@ struct shm_pg{
   uint ref_count; //tracks how many processes have the shared page mapped into them
 };
 
+struct {
+	uint initialized; //0 if not initialized, 1 if initialized
+	struct shm_pg pages[SHM_MAXNUM];
+} shmtable;
+
 char *shm_get(char *name);
 int   shm_rem(char *name);
