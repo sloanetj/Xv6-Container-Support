@@ -229,7 +229,7 @@ fork(void)
 		{
 			if(curproc->shmpgs[pg_num]->name == pg->name)
 			{
-				ref_count++;
+				pg->ref_count++;
 				np->shmpgs[pg_num] =  curproc->shmpgs[pg_num];
 			}
 		}
