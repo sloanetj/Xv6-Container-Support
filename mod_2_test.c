@@ -23,5 +23,5 @@ main(void)
 
     shm_rem("test2");
 
-  exit();
+    exit();                                                               
 }

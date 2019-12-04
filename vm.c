@@ -373,63 +373,8 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 	return 0;
 }
 
-// int
-// findpagevm(struct shm_pg *pg)
-// {
-// 	struct proc *p = myproc();
-//
-// 	int pg_num;
-// 	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
-// 	{
-// 		if(p->shmpgs[pg_num] != 0 && strncmp(p->shmpgs[pg_num]->name, pg->name, 200) == 0)
-// 		{
-// 			return pg_num;
-// 		}
-// 	}
-// 	return -1; //error
-// }
 
-
-// char*
-// mappage(struct shm_pg *pg)
-// {
-// 	struct proc *p = myproc();
-//
-// 	char *vas = 0;
-// 	char* base = (char*)KERNBASE - 4096;
-//
-// 	int pg_num = findpagevm(pg);
-//
-// 	cprintf("PGNUMVM %d   ", pg_num);
-// 	//if page elready exists
-// 	if(pg_num >= 0)
-// 	{
-//
-// 		return (char*)(base - 4096);
-// 	}
-// 	else
-// 	{
-//
-// 		for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
-// 		{
-// 			if(!p->shmpgs[pg_num])
-// 			{
-// 				p->shmpgs[pg_num] = pg;
-// 				vas = base;
-// 			}
-// 			base -= 4096;
-// 		}
-// 	}
-//
-// 	if(mappages(p->pgdir, (void*)vas, 4096, V2P(pg->pa), PTE_P | PTE_W | PTE_U) >= 0)
-// 	{
-// 		pg->ref_count++;
-// 		return vas;
-// 	}
-//
-// 	return 0;
-// }
-
+//Map a 4096 page into the calling process’s virtual address space
 char*
 shmget(char* name)
 {
@@ -480,20 +425,8 @@ shmget(char* name)
 	return NULL;
 }
 
-// int
-// shmpg_unmap(struct shm_pg *pg)
-// {
-// 	struct proc *p = myproc();
-//
-// 	int pg_num = findpagevm(pg);
-//
-// 	p->shmpgs[pg_num] = 0;
-//
-// 	//char *vas = (char*)((KERNBASE - 4096) - (pg_num*4096));
-//
-// 	return --pg->ref_count;
-// }
 
+//This removes a mapping of the shared page from the calling process’s virtual address space
 int
 shmrem(char* name)
 {
@@ -522,21 +455,6 @@ shmrem(char* name)
 		}
 	}
 
-	// uint pg_num = findpage(name);
-  // if(pg_num <= SHM_MAXNUM)
-	// {
-	// 	if(shmtable.pages[pg_num].ref_count > 0)
-	// 	{
-	// 		pg = &shmtable.pages[pg_num];
-	// 		ref_count = shmpg_unmap(pg);
-	// 		if(ref_count == 0)
-	// 		{
-	// 			kfree(pg->pa);
-	// 			pg->pa = 0;
-	// 		}
-	// 		return ref_count;
-	// 	}
-	// }
 cprintf("JK");
 
 	return -1;
