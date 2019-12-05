@@ -412,8 +412,10 @@ shmget(char* name)
 		{
 			strncpy(pg->name, name, sizeof(name));
 			pg->name = name;
+			cprintf(name);
 			pg->allocated = 1;
 			pg->pa = kalloc();
+			
 			pg->ref_count = 1;
 			memset(pg->pa, 0, PGSIZE);
 			mappages(myproc()->pgdir, (void*)(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
