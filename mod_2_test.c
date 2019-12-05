@@ -8,20 +8,50 @@ int
 main(void)
 {
 
-  char* shared_memory_address1 = shm_get("test");
+  char* shared_memory_address = shm_get("test");
 
+//  shm_get("test");
 
-   printf(1, "   %x     ", shared_memory_address1);
+  int test = 1;
+  (int)*shared_memory_address = test;
 
-   shm_rem("test");
+  if (fork() == 0){
+    //char* shared_memory_address2 = shared_memory_address1;
+    (int)*shared_memory_address -= 1;
+    printf(1, "    %d  \n", (int)*shared_memory_address);
+    exit();
+  }
+  wait();
 
-
-   char* shared_memory_address2 = shm_get("test2");
-
-
-    printf(1, "   %x     ", shared_memory_address2);
-
-    shm_rem("test2");
-
-    exit();                                                               
+  exit();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// printf(1, "   %x     ", shared_memory_address1);
+//
+// shm_rem("test");
+//
+//
+//
+//
+// char* shared_memory_address2 = shm_get("test2");
+//
+//
+//  printf(1, "   %x     ", shared_memory_address2);
+//
+//  shm_rem("test2");
+//
+//
+// printf(1, " MADE IT\n");
