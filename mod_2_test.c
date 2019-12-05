@@ -10,26 +10,42 @@ main(void)
 
   char* shared_memory_address = shm_get("test");
 
-  *shared_memory_address = 1;
+//  shm_get("test");
 
-  if (fork() == 0){
-  //  sleep(100);
-   *shared_memory_address = 7;
-  //  wait();
+  int test = 6;
+  *shared_memory_address = test;
+
+  int child = fork();
+
+  if (child == 0){
+    *shared_memory_address -= 1;
+    printf(1, "    %d  \n", *shared_memory_address);
     exit();
   }
-  //else{
-  printf(1,"%d\n",**shared_memory_address);
+  wait();
 
-
-    //wait();
-  //}
   exit();
 }
 
 
-
-
+// 
+// char* shared_memory_address = shm_get("test");
+//
+// *shared_memory_address = 1;
+//
+// if (fork() == 0){
+// //  sleep(100);
+//  *shared_memory_address = 7;
+// //  wait();
+//   exit();
+// }
+// //else{
+// printf(1,"%d\n",**shared_memory_address);
+//
+//
+//   //wait();
+// //}
+// exit();
 
 
 
