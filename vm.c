@@ -416,7 +416,7 @@ shmget(char* name)
 			pg->pa = kalloc();
 			pg->ref_count = 1;
 			memset(pg->pa, 0, PGSIZE);
-			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+			mappages(myproc()->pgdir, (void*)(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			vas = (char*)(myproc()->sz);
 			pg->va = vas;
 			myproc()->sz += PGSIZE;
