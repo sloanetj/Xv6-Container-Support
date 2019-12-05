@@ -397,6 +397,7 @@ shmget(char* name)
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
+			pg->va = vas;
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
 
@@ -417,6 +418,7 @@ shmget(char* name)
 			memset(pg->pa, 0, PGSIZE);
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			vas = (char*)PGROUNDUP(myproc()->sz);
+			pg->va = vas;
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
 
@@ -450,6 +452,7 @@ shmrem(char* name)
 				myproc()->shmpgs[pg_num] = 0;
 				kfree(pg->pa);
 				pg->allocated = 0;
+				pg->va = 0;
 				pg->pa = 0;
 			}
 			cprintf("REMOVED");
