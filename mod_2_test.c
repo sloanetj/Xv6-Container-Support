@@ -16,10 +16,10 @@ main(void)
     printf(1,"%d\n",*shared_memory_address);
     exit();
   }
-  else{
+  //else{
     *shared_memory_address = 7;
     wait();
-  }
+  //}
   exit();
 }
 
