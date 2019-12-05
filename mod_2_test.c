@@ -18,6 +18,8 @@ main(void)
   }
   //else{
     *shared_memory_address = 7;
+    printf(1,"%d\n",*shared_memory_address);
+
     wait();
   //}
   exit();
