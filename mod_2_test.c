@@ -7,12 +7,12 @@
 int
 main(void)
 {
-  char* shared_memory_address1 = shm_get("test1");
-
-  printf(1, "   %x     ", shared_memory_address1);
-
-  shm_rem("test1");
-
+  // char* shared_memory_address1 = shm_get("test1");
+  //
+  // printf(1, "   %x     ", shared_memory_address1);
+  //
+  // shm_rem("test1");
+  //
 
 
 
