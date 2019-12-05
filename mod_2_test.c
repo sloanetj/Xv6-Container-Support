@@ -12,13 +12,13 @@ main(void)
   *shared_memory_address = 1;
 
   if (fork() == 0){
-    sleep(1000);
+    sleep(100);
     printf(1,"%d\n",*shared_memory_address);
     exit();
   }
   //else{
     *shared_memory_address = 7;
-  //  printf(1,"%d\n",*shared_memory_address);
+    printf(1,"%d\n",*shared_memory_address);
 
     wait();
   //}
