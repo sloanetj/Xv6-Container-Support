@@ -12,7 +12,7 @@ main(void)
   *shared_memory_address = 1;
 
   if (fork() == 0){
-    sleep(100000);
+    sleep(1000);
     printf(1,"%d\n",*shared_memory_address);
     exit();
   }
