@@ -11,7 +11,7 @@ main(void)
 
   printf(1, "   %x     ", shared_memory_address1);
 
-  shm_rem("test");
+  shm_rem("test1");
 
 
 
