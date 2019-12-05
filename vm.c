@@ -449,8 +449,9 @@ shmrem(char* name)
 			if(pg->ref_count == 0)
 			{
 				pg->allocated = 0;
-				kfree(pg->pa);
 				pg->pa = 0;
+				kfree(pg->pa);
+
 			}
 			cprintf("REMOVED");
 			return pg->ref_count;
