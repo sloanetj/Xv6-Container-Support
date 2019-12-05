@@ -18,6 +18,7 @@ main(void)
   int child = fork();
 
   if (child == 0){
+    sleep(100);
     *shared_memory_address -= 1;
     exit();
   }
