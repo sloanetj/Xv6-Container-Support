@@ -9,18 +9,20 @@ main(void)
 {
 
   char* shared_memory_address = shm_get("test");
+
   *shared_memory_address = 1;
 
   if (fork() == 0){
-    sleep(100);
-    printf(1,"%d\n",shared_memory_address);
+  //  sleep(100);
+   *shared_memory_address = 7;
+    wait();
     exit();
   }
   //else{
-    *shared_memory_address = 7;
-    printf(1,"%d\n", shared_memory_address);
+  printf(1,"%d\n",shared_memory_address);
 
-    wait();
+
+    //wait();
   //}
   exit();
 }
