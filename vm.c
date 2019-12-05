@@ -447,13 +447,13 @@ shmrem(char* name)
 		if(pg->name == name)
 		{
 			pg->ref_count--;
+			pg->va -= PGSIZE;
 
 			if(pg->ref_count == 0)
 			{
 				myproc()->shmpgs[pg_num] = 0;
 				kfree(pg->pa);
 				pg->allocated = 0;
-				pg->va = 0;
 				pg->pa = 0;
 			}
 			cprintf("REMOVED");
