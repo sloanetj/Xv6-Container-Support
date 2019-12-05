@@ -15,8 +15,9 @@ main(void)
   int test = 6;
   *shared_memory_address = test;
 
-  if (fork() == 0){
-    //char* shared_memory_address2 = shared_memory_address1;
+  int child = fork();
+
+  if (child == 0){
     *shared_memory_address -= 1;
     printf(1, "    %d  \n", *shared_memory_address);
     exit();
