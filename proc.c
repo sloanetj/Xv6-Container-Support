@@ -214,7 +214,7 @@ fork(void)
 	// 	}
 	// }
 
-  copy shared pages into new process address
+//  copy shared pages into new process address
 	struct shm_pg* pg;
 
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
