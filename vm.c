@@ -420,7 +420,6 @@ shmget(char* name)
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			pg->va = vas;
 			myproc()->sz += PGSIZE;
-			cprintf("   %d ", PGSIZE);
 			myproc()->shmpgs[pg_num] = pg;
 
 			return (char*)vas;
