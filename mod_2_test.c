@@ -12,7 +12,7 @@ main(void)
 
 //  shm_get("test");
 
-  int test = 1;
+  int test = 6;
   *shared_memory_address = test;
 
   if (fork() == 0){
