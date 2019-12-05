@@ -19,16 +19,18 @@ main(void)
 
   if (child == 0){
     *shared_memory_address -= 1;
-    printf(1, "    %d  \n", *shared_memory_address);
     exit();
   }
   wait();
+
+  printf(1, "    %d  \n", *shared_memory_address);
+
 
   exit();
 }
 
 
-// 
+//
 // char* shared_memory_address = shm_get("test");
 //
 // *shared_memory_address = 1;
