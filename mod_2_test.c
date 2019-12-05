@@ -13,12 +13,12 @@ main(void)
 //  shm_get("test");
 
   int test = 1;
-  (int)*shared_memory_address = test;
+  *shared_memory_address = test;
 
   if (fork() == 0){
     //char* shared_memory_address2 = shared_memory_address1;
-    (int)*shared_memory_address -= 1;
-    printf(1, "    %d  \n", (int)*shared_memory_address);
+    *shared_memory_address -= 1;
+    printf(1, "    %d  \n", *shared_memory_address);
     exit();
   }
   wait();
