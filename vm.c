@@ -420,7 +420,7 @@ shmget(char* name)
 			memset(pg->pa, 0, PGSIZE);
 			mappages(myproc()->pgdir, (void*)(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			vas = (char*)(myproc()->sz);
-			cprintf(vas);
+			cprintf("vas:   %x   ",vas);
 			pg->va = vas;
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
