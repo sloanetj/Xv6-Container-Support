@@ -15,11 +15,11 @@ main(void)
   if (fork() == 0){
   //  sleep(100);
    *shared_memory_address = 7;
-    wait();
+  //  wait();
     exit();
   }
   //else{
-  printf(1,"%d\n",shared_memory_address);
+  printf(1,"%d\n",**shared_memory_address);
 
 
     //wait();
