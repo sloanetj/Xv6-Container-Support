@@ -443,11 +443,11 @@ shmrem(char* name)
 		// if(strncmp(pg->name, name,sizeof(name)) == 0)
 		if(pg->name == name)
 		{
-			myproc()->shmpgs[pg_num] = 0;
 			pg->ref_count--;
 
 			if(pg->ref_count == 0)
 			{
+				myproc()->shmpgs[pg_num] = 0;
 				pg->allocated = 0;
 				pg->pa = 0;
 				kfree(pg->pa);
