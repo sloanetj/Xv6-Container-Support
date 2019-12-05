@@ -9,6 +9,7 @@ main(void)
 {
 
   char* shared_memory_address = shm_get("test");
+  
 
 //  shm_get("test");
 

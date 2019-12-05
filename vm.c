@@ -388,7 +388,7 @@ shmget(char* name)
 	int pg_num = 0;
 
 	//see if the name already exists in the table
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
 	{
 
 		//if(strncmp(pg->name, name,sizeof(name)) == 0)
@@ -398,6 +398,8 @@ shmget(char* name)
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
 			myproc()->sz += PGSIZE;
+			myproc()->shmpgs[pg_num] = pg;
+
 			return vas;
 		}
 	}
