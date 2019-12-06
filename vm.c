@@ -410,7 +410,7 @@ shmget(char* name)
 	//if name does not exist in table
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
 	{
-		if(pg->allocated == 0)
+		if(pg->name == 0)
 		{
 			pg->name = name;
 			pg->allocated = 1;
