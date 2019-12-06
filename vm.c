@@ -412,17 +412,15 @@ shmget(char* name)
 		{
 			strncpy(pg->name, name, sizeof(name));
 			pg->name = name;
-			cprintf(name);
 			pg->allocated = 1;
 			pg->pa = kalloc();
-
 			pg->ref_count = 1;
 			memset(pg->pa, 0, PGSIZE);
-			mappages(myproc()->pgdir, (void*)(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			vas = (char*)(myproc()->sz);
-			cprintf("vas:   %x   ",vas);
+			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+			vas = (char*)PGROUNDUP(myproc()->sz);
 			pg->va = vas;
 			myproc()->sz += PGSIZE;
+			cprintf("   %d ", PGSIZE);
 			myproc()->shmpgs[pg_num] = pg;
 
 			return (char*)vas;
@@ -449,7 +447,7 @@ shmrem(char* name)
 		if(pg->name == name)
 		{
 			pg->ref_count--;
-			pg->va -= PGSIZE;
+			//pg->va -= PGSIZE;
 
 			if(pg->ref_count == 0)
 			{
