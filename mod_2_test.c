@@ -12,7 +12,7 @@ main(void)
   char* shared_memory_address2 = shm_get("test2");
   //  shm_get("test2");
 
-//  *shared_memory_address2 = 9;
+  *shared_memory_address2 = 9;
 
    printf(1, "   %d     ",shared_memory_address2);
 
