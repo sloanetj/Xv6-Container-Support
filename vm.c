@@ -392,7 +392,7 @@ shmget(char* name)
 	{
 
 		//if(strncmp(pg->name, name,sizeof(name)) == 0)
-		cprintf(name);
+		//cprintf(name);
 		if(pg->name == name)
 		{
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
@@ -411,7 +411,7 @@ shmget(char* name)
 	{
 		if(pg->allocated == 0)
 		{
-			//cprintf("adding name now");
+			cprintf("adding name now");
 			pg->name = name;
 			pg->allocated = 1;
 			pg->pa = kalloc();
