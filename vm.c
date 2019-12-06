@@ -419,7 +419,7 @@ shmget(char* name)
 			}
 			else
 			{
-				cprintf("shit\n);
+				cprintf("shit\n");
 			}
 			pg->allocated = 1;
 			pg->pa = kalloc();
