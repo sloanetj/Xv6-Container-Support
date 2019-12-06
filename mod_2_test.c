@@ -13,7 +13,7 @@ main(void)
 
   *shared_memory_address = 1;
 
-  if (fork() == 0){
+  if (fork() != 0){
     sleep(100);
    *shared_memory_address = 7;
     wait();
