@@ -410,7 +410,6 @@ shmget(char* name)
 	{
 		if(pg->allocated == 0)
 		{
-			strncpy(pg->name, name, sizeof(name));
 			pg->name = name;
 			pg->allocated = 1;
 			pg->pa = kalloc();

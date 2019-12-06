@@ -8,47 +8,28 @@ int
 main(void)
 {
 
+  int pid;
+  pid = fork();
 
-  char* shared_memory_address = shm_get("test");
 
-  *shared_memory_address = 1;
+  char* shared_memory_address1 = 0;
+  if(pid == 0)
+  {
+    shared_memory_address1 = shm_get("test1");
+    //printf(1, "   %x     ", shared_memory_address1);
+    *shared_memory_address1 = 7;
+    printf(1, "  %d   \n", *shared_memory_address1);
 
-  if (fork() != 0){
-    sleep(100);
-   *shared_memory_address = 7;
-    wait();
-    exit();
   }
-  //else{
-  printf(1,"%d\n",*shared_memory_address);
+  else
+  {
+
+    shared_memory_address1 = shm_get("test1");
+    printf(1, "  %d   \n", *shared_memory_address1);
+  }
 
 
-  wait();
-  //}
-  exit();
-
-  // int pid;
-  // pid = fork();
-  //
-  //
-  // char* shared_memory_address1 = 0;
-  // if(pid == 0)
-  // {
-  //   shared_memory_address1 = shm_get("test1");
-  //   //printf(1, "   %x     ", shared_memory_address1);
-  //   *shared_memory_address1 = 7;
-  //   printf(1, "  %d   \n", *shared_memory_address1);
-  //
-  // }
-  // else
-  // {
-  //
-  //   shared_memory_address1 = shm_get("test1");
-  //   printf(1, "  %d   \n", *shared_memory_address1);
-  // }
-  //
-  //
-  //  exit();
+   exit();
 }
 
 // char* shared_memory_address1 = shm_get("test1");
