@@ -9,39 +9,39 @@ main(void)
 {
 
 
-  // char* shared_memory_address2 = shm_get("test2");
+  char* shared_memory_address2 = shm_get("test2");
+
+  *shared_memory_address2 = 9;
+
+   printf(1, "   %d     ", *shared_memory_address2);
+
+   //shm_rem("test2");
+
+
+  printf(1, " MADE IT\n");
+  exit();
+  // int pid;
+  // pid = fork();
   //
-  // *shared_memory_address2 = 9;
   //
-  //  printf(1, "   %d     ", *shared_memory_address2);
+  // char* shared_memory_address1 = 0;
+  // if(pid == 0)
+  // {
+  //   shared_memory_address1 = shm_get("test1");
+  //   //printf(1, "   %x     ", shared_memory_address1);
+  //   *shared_memory_address1 = 7;
+  //   printf(1, "  %d   \n", *shared_memory_address1);
   //
-  //  //shm_rem("test2");
+  // }
+  // else
+  // {
+  //
+  //   shared_memory_address1 = shm_get("test1");
+  //   printf(1, "  %d   \n", *shared_memory_address1);
+  // }
   //
   //
-  // printf(1, " MADE IT\n");
-  // exit();
-  int pid;
-  pid = fork();
-
-
-  char* shared_memory_address1 = 0;
-  if(pid == 0)
-  {
-    shared_memory_address1 = shm_get("test1");
-    //printf(1, "   %x     ", shared_memory_address1);
-    *shared_memory_address1 = 7;
-    printf(1, "  %d   \n", *shared_memory_address1);
-
-  }
-  else
-  {
-
-    shared_memory_address1 = shm_get("test1");
-    printf(1, "  %d   \n", *shared_memory_address1);
-  }
-
-
-   exit();
+  //  exit();
 }
 
 // char* shared_memory_address1 = shm_get("test1");

@@ -412,6 +412,7 @@ shmget(char* name)
 		if(pg->allocated == 0)
 		{
 			pg->name = name;
+			cprintf(pg->name);
 			pg->allocated = 1;
 			pg->pa = kalloc();
 			pg->ref_count = 1;
