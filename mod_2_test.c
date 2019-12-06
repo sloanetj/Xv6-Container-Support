@@ -24,26 +24,29 @@ main(void)
 
 
   char* shared_memory_address1 = shm_get("test1");
-
   if(fork() == 0)
   {
-    shared_memory_address1 = shm_get("test1");
+    char* shared_memory_address2 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
-    *shared_memory_address1 = 7;
+    *shared_memory_address2 = 7;
     //printf(1, "  %d   \n", *shared_memory_address1);
     exit();
 
   }
-  // else
+   else
+   {
   // {
   //   //
   //   // shared_memory_address1 = shm_get("test1");
   //   // printf(1, "  %d   \n", *shared_memory_address1);
   // }
-  printf(1, "  %d   \n", *shared_memory_address1);
+
   wait();
 
+  printf(1, "  %d   \n", *shared_memory_address1);
+
    exit();
+ }
 }
 
 // char* shared_memory_address1 = shm_get("test1");
