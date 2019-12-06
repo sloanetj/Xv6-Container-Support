@@ -24,7 +24,7 @@ main(void)
 
 
   char* shared_memory_address1 = shm_get("test1");
-  //*shared_memory_address1 = 4;
+  *shared_memory_address1 = 4;
   if(fork() == 0)
   {
     shared_memory_address1 = shm_get("test1");
