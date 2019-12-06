@@ -11,7 +11,7 @@ main(void)
   int pid;
   pid = fork();
 
-  char* shared_memory_address1;
+  char* shared_memory_address1 = "lol";
   if(pid == 0)
   {
     shared_memory_address1 = shm_get("test1");
