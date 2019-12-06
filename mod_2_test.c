@@ -7,21 +7,38 @@
 int
 main(void)
 {
-  char* shared_memory_address1 = shm_get("test1");
+  int pid;
+  pid = fork();
 
-  printf(1, "   %x     ", shared_memory_address1);
+  char* shared_memory_address1;
+  if(pid == 0)
+  {
+    shared_memory_address1 = shm_get("test1");
+    //printf(1, "   %x     ", shared_memory_address1);
+    *shared_memory_address1 = 7;
 
-  shm_rem("test1");
+  }
+  else
+  {
+    shared_memory_address1 = shm_get("test1");
+    printf("  %d   \n", *shared_memory_address1);
+  }
 
 
 
 
-  char* shared_memory_address2 = shm_get("test2");
+
+  //shm_rem("test1");
 
 
-   printf(1, "   %x     ", shared_memory_address2);
 
-   shm_rem("test2");
+
+  // char* shared_memory_address2 = shm_get("test2");
+  //
+  //
+  //  printf(1, "   %x     ", shared_memory_address2);
+  //
+  //  shm_rem("test2");
 
 
   printf(1, " MADE IT\n");
