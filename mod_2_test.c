@@ -12,10 +12,9 @@ main(void)
   pid = fork();
 
 
-  char* shared_memory_address1 = "lol";
+  char* shared_memory_address1 = 0;
   if(pid == 0)
   {
-    printf(1,"FORKED\n");
     shared_memory_address1 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
     *shared_memory_address1 = 7;
@@ -23,7 +22,6 @@ main(void)
   }
   else
   {
-    printf(1,"ELSE\n");
 
     shared_memory_address1 = shm_get("test1");
     printf(1, "  %d   \n", *shared_memory_address1);
