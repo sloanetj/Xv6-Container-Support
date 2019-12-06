@@ -393,7 +393,6 @@ shmget(char* name)
 
 		//if(strncmp(pg->name, name,sizeof(name)) == 0)
 		//cprintf(name);
-		cprintf("   %s  \n",pg->name);
 
 		if(pg->name == name)
 		{
