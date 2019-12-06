@@ -411,6 +411,7 @@ shmget(char* name)
 	{
 		if(pg->allocated == 0)
 		{
+			cprintf("adding name now");
 			pg->name = name;
 			pg->allocated = 1;
 			pg->pa = kalloc();
