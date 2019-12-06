@@ -24,11 +24,12 @@ main(void)
 
 
   char* shared_memory_address1 = shm_get("test1");
+  *shared_memory_address1 = 1473;
   if(fork() == 0)
   {
     char* shared_memory_address2 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
-    *shared_memory_address2 = 7;
+    *shared_memory_address2 = 3;
     //printf(1, "  %d   \n", *shared_memory_address1);
     exit();
 
