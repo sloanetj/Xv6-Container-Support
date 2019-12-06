@@ -20,13 +20,12 @@ main(void)
   //
   // printf(1, " MADE IT\n");
   // exit();
-  int pid;
-  pid = fork();
+
 
 
   char* shared_memory_address1 = shm_get("test1");
   *shared_memory_address1 = 4;
-  if(pid == 0)
+  if(fork() == 0)
   {
     shared_memory_address1 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
@@ -42,7 +41,7 @@ main(void)
   //   // printf(1, "  %d   \n", *shared_memory_address1);
   // }
   printf(1, "  %d   \n", *shared_memory_address1);
-
+  wait();
 
    exit();
 }
