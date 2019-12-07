@@ -39,11 +39,11 @@ main(void)
   else
   {
     wait();
-    char* shared_memory_address2 = shm_get("test1");
+    shared_memory_address1 = shm_get("test1");
 
-    printf(1, "Parent:  %d   \n", *shared_memory_address2);
+    printf(1, "Parent:  %d   \n", *shared_memory_address1);
 
-    printf(1, "Parent:  %x   \n", shared_memory_address2);
+    printf(1, "Parent:  %x   \n", shared_memory_address1);
 
   }
 
