@@ -11,6 +11,8 @@ main(void)
   if(fork() == 0)
     {
       char* shared_memory_address1 = shm_get("test");
+      *shared_memory_address1 = 4;
+      printf(1, "%ds\n", *shared_memory_address1);
       exit();
     }
   // char* shared_memory_address2 = shm_get("test2");
