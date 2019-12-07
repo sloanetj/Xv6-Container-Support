@@ -8,6 +8,7 @@ int
 main(void)
 {
   char* shared_memory_address1;
+  *shared_memory_address1 = 10;
   if(fork() == 0)
     {
       shared_memory_address1 = shm_get("test");
