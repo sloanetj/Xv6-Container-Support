@@ -38,7 +38,7 @@ main(void)
   }
   else
   {
-    wait();
+    //wait();
     shared_memory_address1 = shm_get("test1");
 
     printf(1, "Parent:  %d   \n", *shared_memory_address1);
@@ -46,7 +46,7 @@ main(void)
     printf(1, "Parent:  %x   \n", shared_memory_address1);
 
   }
-
+   wait();
    exit();
 }
 
