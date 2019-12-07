@@ -396,6 +396,7 @@ shmget(char* name)
 
 		if(pg->name == name)
 		{
+			cprintf("LOL");
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
