@@ -402,7 +402,7 @@ shmget(char* name)
 			pg->va = vas;
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
-			cprintf("already exists:   %x    \n", pg->pa)
+			cprintf("already exists:   %x    \n", pg->pa);
 			return vas;
 		}
 	}
@@ -415,7 +415,7 @@ shmget(char* name)
 			pg->name = name;
 			pg->allocated = 1;
 			pg->pa = kalloc();
-			cprintf("created now:   %x    \n", pg->pa)
+			cprintf("created now:   %x    \n", pg->pa);
 
 			pg->ref_count = 1;
 			memset(pg->pa, 0, PGSIZE);
