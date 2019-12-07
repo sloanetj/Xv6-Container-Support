@@ -45,7 +45,7 @@ main(void)
     printf(1, "Parent:  %x   \n", shared_memory_address2);
 
   }
-
+  wait();
    exit();
 }
 
