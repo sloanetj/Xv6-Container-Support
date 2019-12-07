@@ -396,25 +396,13 @@ shmget(char* name)
 
 		if(pg->name == name)
 		{
-			cprintf("LOL");
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
-			cprintf("LOL1");
-
 			pg->ref_count++;
-			cprintf("LOL2");
-
 			vas = (char*)PGROUNDUP(myproc()->sz);
-			cprintf("LOL3");
-
 			pg->va = vas;
-			cprintf("LOL4");
-
 			myproc()->sz += PGSIZE;
-			cprintf("LOL5");
-
 			myproc()->shmpgs[pg_num] = pg;
-			cprintf("LOL6");
-
+			cprintf("already exists:   %x    \n", pg->pa)
 			return vas;
 		}
 	}
@@ -427,6 +415,8 @@ shmget(char* name)
 			pg->name = name;
 			pg->allocated = 1;
 			pg->pa = kalloc();
+			cprintf("created now:   %x    \n", pg->pa)
+
 			pg->ref_count = 1;
 			memset(pg->pa, 0, PGSIZE);
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
