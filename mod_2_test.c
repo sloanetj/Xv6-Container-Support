@@ -33,7 +33,7 @@ main(void)
     printf(1, "Child:  %d   \n", *shared_memory_address1);
     printf(1, "Child:  %x   \n", shared_memory_address1);
 
-    exit();
+    //exit();
 
   }
   else
