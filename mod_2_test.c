@@ -20,6 +20,8 @@ main(void)
     shared_memory_address1 = shm_get("test");
     printf(1, "%d \n", *shared_memory_address1);
 
+    shm_get("test2")
+
   // char* shared_memory_address2 = shm_get("test2");
   //
   // *shared_memory_address2 = 9;
