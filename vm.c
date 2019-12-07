@@ -443,25 +443,22 @@ shmrem(char* name)
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
 	{
 
-		// if(strncmp(pg->name, name,sizeof(name)) == 0)
 		if(pg->name == name)
 		{
 			pg->ref_count--;
-			//pg->va -= PGSIZE;
 
 			if(pg->ref_count == 0)
 			{
 				myproc()->shmpgs[pg_num] = 0;
 				kfree(pg->pa);
 				pg->allocated = 0;
+				pg->va = 0;
 				pg->pa = 0;
 			}
-			cprintf("REMOVED");
 			return pg->ref_count;
 		}
 	}
 
-cprintf("JK");
 
 	return -1;
 }
