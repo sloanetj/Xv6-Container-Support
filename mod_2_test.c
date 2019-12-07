@@ -30,7 +30,7 @@ main(void)
     shared_memory_address1 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
     *shared_memory_address1 = 7;
-    printf(1, "  %d   \n", *shared_memory_address1);
+  //  printf(1, "  %d   \n", *shared_memory_address1);
     exit();
 
   }
