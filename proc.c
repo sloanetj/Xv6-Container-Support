@@ -215,17 +215,13 @@ fork(void)
 	// }
 
 //  copy shared pages into new process address
-	struct shm_pg* pg;
 
-	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	int pg_num;
+	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
 	{
-		for(int pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+		if(currproc->shmpgs[pg_num] != 0)
 		{
-			if(curproc->shmpgs[pg_num]->name == pg->name)
-			{
-				pg->ref_count++;
-				np->shmpgs[pg_num] =  curproc->shmpgs[pg_num];
-			}
+			np->shmpgs[pg_num] = curproc->shmpgs[pg_num];
 		}
 	}
 
