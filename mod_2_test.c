@@ -27,7 +27,7 @@ main(void)
   char* shared_memory_address1;
   if(pid == 0)
   {
-    //char* 
+    //char*
     shared_memory_address1 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
     *shared_memory_address1 = 7;
@@ -40,6 +40,8 @@ main(void)
   else
   {
     wait();
+    wait();
+
     shared_memory_address1 = shm_get("test1");
 
     printf(1, "Parent:  %d   \n", *shared_memory_address1);
