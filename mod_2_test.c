@@ -48,7 +48,6 @@ main(void)
   // }
   //  wait();
    exit();
-   return 0;
 }
 
 // char* shared_memory_address1 = shm_get("test1");
