@@ -7,14 +7,17 @@
 int
 main(void)
 {
-
+  char* shared_memory_address1;
   if(fork() == 0)
     {
-      char* shared_memory_address1 = shm_get("test");
+      shared_memory_address1 = shm_get("test");
       *shared_memory_address1 = 4;
-      printf(1, "%d \n", *shared_memory_address1);
       exit();
     }
+
+    sleep(10);
+    printf(1, "%d \n", *shared_memory_address1);
+
   // char* shared_memory_address2 = shm_get("test2");
   //
   // *shared_memory_address2 = 9;
