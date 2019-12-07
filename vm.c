@@ -398,11 +398,22 @@ shmget(char* name)
 		{
 			cprintf("LOL");
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_P | PTE_W | PTE_U);
+			cprintf("LOL1");
+
 			pg->ref_count++;
+			cprintf("LOL2");
+
 			vas = (char*)PGROUNDUP(myproc()->sz);
+			cprintf("LOL3");
+
 			pg->va = vas;
+			cprintf("LOL4");
+
 			myproc()->sz += PGSIZE;
+			cprintf("LOL5");
+
 			myproc()->shmpgs[pg_num] = pg;
+			cprintf("LOL6");
 
 			return vas;
 		}
