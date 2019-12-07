@@ -8,7 +8,7 @@ int
 main(void)
 {
   char* shared_memory_address1;
-  *shared_memory_address1 = 10;
+
   if(fork() == 0)
     {
       shared_memory_address1 = shm_get("test");
@@ -17,6 +17,7 @@ main(void)
     }
 
     sleep(10);
+    shared_memory_address1 = shm_get("test");
     printf(1, "%d \n", *shared_memory_address1);
 
   // char* shared_memory_address2 = shm_get("test2");
