@@ -219,7 +219,7 @@ fork(void)
 	int pg_num;
 	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
 	{
-		if(currproc->shmpgs[pg_num] != 0)
+		if(curproc->shmpgs[pg_num] != 0)
 		{
 			np->shmpgs[pg_num] = curproc->shmpgs[pg_num];
 		}
