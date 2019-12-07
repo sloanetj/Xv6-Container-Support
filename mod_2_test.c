@@ -8,18 +8,22 @@ int
 main(void)
 {
 
-
-  char* shared_memory_address2 = shm_get("test2");
-
-  *shared_memory_address2 = 9;
-
-   printf(1, "   %d     ", *shared_memory_address2);
-
-   shm_rem("test2");
-
-
-  printf(1, " MADE IT\n");
-  exit();
+  if(fork() == 0)
+    {
+      char* shared_memory_address1 = shm_get("test");
+      exit();
+    }
+  // char* shared_memory_address2 = shm_get("test2");
+  //
+  // *shared_memory_address2 = 9;
+  //
+  //  printf(1, "   %d     ", *shared_memory_address2);
+  //
+  //  //shm_rem("test2");
+  //
+  //
+  // printf(1, " MADE IT\n");
+  // exit();
   // int pid;
   // pid = fork();
   //
