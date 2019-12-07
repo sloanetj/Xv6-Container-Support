@@ -31,7 +31,7 @@ main(void)
     //printf(1, "   %x     ", shared_memory_address1);
     *shared_memory_address1 = 7;
     //printf(1, "  %d   \n", *shared_memory_address1);
-    exit();
+    //exit();
 
   }
   else
