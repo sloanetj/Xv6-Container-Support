@@ -24,10 +24,11 @@ main(void)
   pid = fork();
 
 
-  //char* shared_memory_address1;
+  char* shared_memory_address1;
   if(pid == 0)
   {
-    char* shared_memory_address1 = shm_get("test1");
+    //char* 
+    shared_memory_address1 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
     *shared_memory_address1 = 7;
     printf(1, "Child:  %d   \n", *shared_memory_address1);
