@@ -24,24 +24,29 @@ main(void)
   pid = fork();
 
 
-  char* shared_memory_address1 = 0;
+  //char* shared_memory_address1;
   if(pid == 0)
   {
-    shared_memory_address1 = shm_get("test1");
+    char* shared_memory_address1 = shm_get("test1");
     //printf(1, "   %x     ", shared_memory_address1);
     *shared_memory_address1 = 7;
-    printf(1, "  %d   \n", *shared_memory_address1);
+    printf(1, "Child:  %d   \n", *shared_memory_address1);
+    printf(1, "Child:  %d   \n", shared_memory_address1);
+
     exit();
 
   }
   else
   {
+    wait();
+    char* shared_memory_address2 = shm_get("test1");
 
-    shared_memory_address1 = shm_get("test1");
-    printf(1, "  %d   \n", *shared_memory_address1);
+    printf(1, "Parent:  %d   \n", *shared_memory_address2);
+
+    printf(1, "Parent:  %d   \n", shared_memory_address2);
+
   }
 
-   wait();
    exit();
 }
 
