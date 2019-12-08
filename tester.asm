@@ -18,8 +18,8 @@ int main(){
    b:	89 e5                	mov    %esp,%ebp
    d:	53                   	push   %ebx
    e:	51                   	push   %ecx
-
-	exit();
+	// 	exit();
+	// }
 }
 
 int mutex_create(char *name){
