@@ -230,10 +230,10 @@ fork(void)
 	{
 		if(curproc->shmpgs[pg_num] != 0)
 		{
-			np->shmpgs[pg_num].allocated = curproc->shmpgs[pg_num].allocated;
-			np->shmpgs[pg_num].name = curproc->shmpgs[pg_num].name;
-			np->shmpgs[pg_num].pa = curproc->shmpgs[pg_num].pa;
-			np->shmpgs[pg_num].ref_count = curproc->shmpgs[pg_num].ref_count;
+			np->shmpgs[pg_num]->allocated = curproc->shmpgs[pg_num]->allocated;
+			np->shmpgs[pg_num]->name = curproc->shmpgs[pg_num]->name;
+			np->shmpgs[pg_num]->pa = curproc->shmpgs[pg_num]->pa;
+			np->shmpgs[pg_num]->ref_count = curproc->shmpgs[pg_num]->ref_count;
 		}
 	}
 
