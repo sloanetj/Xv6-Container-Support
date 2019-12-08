@@ -53,6 +53,7 @@ main(void)
   //   printf(1, "  %d   \n", *shared_memory_address1);
   // }
     wait();
+    shm_rem("test");
    exit();
 }
 
