@@ -298,7 +298,7 @@ exit(void)
 		if(curproc->shmpgs[pg_num] != 0)
 		{
 			deallocuvm(curproc->pgdir, *curproc->shmpgs[pg_num]->pa, *curproc->shmpgs[pg_num]->pa);
-			shmtable.pages[pg_num]->ref_count--;
+			shmtable.pages[pg_num].ref_count--;
 		}
 	}
 
