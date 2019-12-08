@@ -9,6 +9,7 @@
 // ptable moved to proc.h
 int pq_enqueue(struct proc *p);
 struct proc* pq_dequeue();
+int signalcv(int muxid);
 
 static struct proc *initproc;
 
@@ -117,6 +118,8 @@ found:
 	for (i=0; i<MUX_MAXNUM; i++){
 		p->mux_ptrs[i] = 0;
 	}
+
+
 
 
 	return p;
@@ -289,6 +292,8 @@ fork(void)
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
+
+// MODIFIED TO RELEASE ALL LOCKS AND REMOVE ACCESS TO ALL MUTEXS
 void
 exit(void)
 {
@@ -323,6 +328,39 @@ exit(void)
 			if (p->state == ZOMBIE) wakeup1(initproc);
 		}
 	}
+
+
+	// iterate through mux_ptrs.
+	// if any pointers are non-zero, 
+	// 	set name and state = 0, 
+	//  remove proc from cv, if present
+	// 	then set pointer to 0
+	
+	/* we remove this process from this mux's cv, if present
+	because this ensures that if another process signals this 
+	mutex, it will not attempt to access a faulted proc 
+	that had previously been blocked on this condition */
+	int i;
+	int j;
+	int k;
+	for(i=0;i<MUX_MAXNUM;i++){
+		if (curproc->mux_ptrs[i] != 0){
+			curproc->mux_ptrs[i]->name = 0;
+			curproc->mux_ptrs[i]->state = 0;
+			for (j=0; j<1000; j++){
+				if (curproc->mux_ptrs[i]->cv[j] == curproc){
+					// remove proc from this mux's cv - left shift
+					for (k=j; k<999; k++){
+						p->mux_ptrs[i]->cv[k] = p->mux_ptrs[i]->cv[k+1];
+					}
+					p->mux_ptrs[i]->cv[999] = 0;
+				}
+			}
+			curproc->mux_ptrs[i] = 0;
+		}
+	}
+
+
 
 	// Jump into the scheduler, never to return.
 	curproc->state = ZOMBIE;
@@ -669,4 +707,43 @@ pq_dequeue(){
 	// update head
 	ptable.head_tail[priority][0] = (head+1)%QSIZE;
 	return p;
+}
+
+int 
+signalcv(int muxid){
+
+	argint(0,(int*)&muxid);
+	struct proc *p, *sleepy_proc; 
+	p = myproc();
+	int i;
+
+	/* verify this process has access to this mutex
+	and make sure proc is currently holding this mutex*/
+	if (p->mux_ptrs[muxid] == 0 || p->mux_ptrs[muxid]->state != 1){
+		return 0;
+	}
+
+	// atomically dequeue proc from mux's cv wait queue
+	acquire(&MUTEXES.lock);
+	sleepy_proc = p->mux_ptrs[muxid]->cv[0];
+	if (sleepy_proc == 0){
+		release(&MUTEXES.lock);
+		return 0;
+	}
+	for (i=0; i<999; i++){
+		p->mux_ptrs[muxid]->cv[i] = p->mux_ptrs[muxid]->cv[i+1];
+	}
+	p->mux_ptrs[muxid]->cv[999] = 0;
+	release(&MUTEXES.lock);
+
+	// wake up proc 
+	acquire(&ptable.lock);
+	sleepy_proc->state = RUNNABLE;
+	if (pq_enqueue(sleepy_proc) < 0){
+		// queue is full
+		panic("process tried to enqueue when queue is full\n"); // should probably change this at some point
+	}
+	release(&ptable.lock);
+
+	return 1;
 }

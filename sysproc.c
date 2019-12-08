@@ -268,7 +268,7 @@ sys_waitcv(int muxid){
 			break;
 		}
 		if (p->mux_ptrs[muxid]->cv[i] == 0){
-			p->mux_ptrs[muxid]->cv[i]= p;
+			p->mux_ptrs[muxid]->cv[i] = p;
 			break;
 		}
 	}
@@ -306,7 +306,6 @@ sys_signalcv(int muxid){
 	/* verify this process has access to this mutex
 	and make sure proc is currently holding this mutex*/
 	if (p->mux_ptrs[muxid] == 0 || p->mux_ptrs[muxid]->state != 1){
-		cprintf("A\n");
 		return 0;
 	}
 
@@ -315,7 +314,6 @@ sys_signalcv(int muxid){
 	sleepy_proc = p->mux_ptrs[muxid]->cv[0];
 	if (sleepy_proc == 0){
 		release(&MUTEXES.lock);
-		cprintf("B\n");
 		return 0;
 	}
 	for (i=0; i<999; i++){

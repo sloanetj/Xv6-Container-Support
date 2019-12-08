@@ -82,6 +82,54 @@ pq_dequeue(){
 }
 
 int main(){
+
+	int mux_id = mutex_create("mymux");
+	if (fork() == 0){
+		mutex_lock(mux_id);
+		printf(1, "child: about to exit while holding lock\n");
+		exit();
+	}
+	else{
+		wait();
+		if (!mutex_lock(mux_id)){
+			printf(1,"parent: can't take the lock\n");
+		}
+		else {
+			printf(1,"parent: was able to take the lock\n");
+			mutex_unlock(mux_id);
+		}
+	}
+
+	// test cv's
+	int muxid = mutex_create("cv test");
+	if (fork() == 0){
+		
+		if (!mutex_lock(muxid)){
+			printf(1,"SIGNAL LOCK FAILURE\n");
+			exit();
+		}
+		while (!cv_signal(muxid)){
+		}
+		if (!mutex_unlock(muxid)){
+			printf(1,"SIGNAL UNLOCK FAILURE\n");
+			exit();
+		}
+		exit();
+	}
+	if (!mutex_lock(muxid)){
+		printf(1,"LOCK FAILURE\n");
+		exit();
+	}
+	if (!cv_wait(muxid)){
+		printf(1,"CV WAIT FAILURE\n");
+		exit();
+	}
+	wait();
+	printf(1,"CV SUCCESS\n");
+
+	exit();
+
+
 	// struct myproc *p0 = (struct myproc*)malloc(sizeof(struct myproc));
 	// struct myproc *p1 = (struct myproc*)malloc(sizeof(struct myproc));
 	// struct myproc *p2 = (struct myproc*)malloc(sizeof(struct myproc));
@@ -152,33 +200,33 @@ int main(){
 	
 
 
-	int id;
-	int i;
-	int j;
+	// int id;
+	// int i;
+	// int j;
 
-	id = mutex_create("mux1");
+	// id = mutex_create("mux1");
 	
-	for(i=0; i<5; i++){
-		if (fork() == 0){
-			if (!mutex_lock(id)){
-				printf(1,"LOCK FAILURE\n");
-				exit();
-			}
-			for(j=1; j<4; j++){
-				printf(1,"%d\n", j);
-			}
-			printf(1,"\n");
-			if (!mutex_unlock(id)){
-				printf(1,"UNLOCK FAILURE\n");
-			}
+	// for(i=0; i<5; i++){
+	// 	if (fork() == 0){
+	// 		if (!mutex_lock(id)){
+	// 			printf(1,"LOCK FAILURE\n");
+	// 			exit();
+	// 		}
+	// 		for(j=1; j<4; j++){
+	// 			printf(1,"%d\n", j);
+	// 		}
+	// 		printf(1,"\n");
+	// 		if (!mutex_unlock(id)){
+	// 			printf(1,"UNLOCK FAILURE\n");
+	// 		}
 		
-			exit();
-		}
-	}
+	// 		exit();
+	// 	}
+	// }
 
-	for(i=0; i<10; i++){
-		wait();
-	}
+	// for(i=0; i<10; i++){
+	// 	wait();
+	// }
 
 	// test delete
 	// if (!mutex_delete(id)){
@@ -189,36 +237,6 @@ int main(){
 	// 	printf(1,"DELETE SUCCESS\n");
 	// 	exit();
 	// }
-
-
-	// test cv's
-	int muxid = mutex_create("cv test");
-	if (fork() == 0){
-		
-		if (!mutex_lock(muxid)){
-			printf(1,"SIGNAL LOCK FAILURE\n");
-			exit();
-		}
-		while (!cv_signal(muxid)){
-		}
-		if (!mutex_unlock(muxid)){
-			printf(1,"SIGNAL UNLOCK FAILURE\n");
-			exit();
-		}
-		exit();
-	}
-	if (!mutex_lock(muxid)){
-		printf(1,"LOCK FAILURE\n");
-		exit();
-	}
-	if (!cv_wait(muxid)){
-		printf(1,"CV WAIT FAILURE\n");
-		exit();
-	}
-	wait();
-	printf(1,"CV SUCCESS\n");
-
-	exit();
 }
 
 int mutex_create(char *name){
