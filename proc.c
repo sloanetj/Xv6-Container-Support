@@ -216,12 +216,24 @@ fork(void)
 
 //  copy shared pages into new process address
 
+// struct shm_pg{
+//   uint allocated; //boolean to tell if its allocated alread
+//   char* name;
+//   char*  pa; //pa
+//   //char*  va;  //va
+//   uint ref_count; //tracks how many processes have the shared page mapped into them
+// };
+
+
 	int pg_num;
 	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
 	{
 		if(curproc->shmpgs[pg_num] != 0)
 		{
-			np->shmpgs[pg_num] = curproc->shmpgs[pg_num];
+			np->shmpgs[pg_num].allocated = curproc->shmpgs[pg_num].allocated;
+			np->shmpgs[pg_num].name = curproc->shmpgs[pg_num].name;
+			np->shmpgs[pg_num].pa = curproc->shmpgs[pg_num].pa;
+			np->shmpgs[pg_num].ref_count = curproc->shmpgs[pg_num].ref_count;
 		}
 	}
 

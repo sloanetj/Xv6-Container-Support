@@ -399,7 +399,7 @@ shmget(char* name)
 			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_W | PTE_U);
 			pg->ref_count++;
 			vas = (char*)PGROUNDUP(myproc()->sz);
-			pg->va = vas;
+			//pg->va = vas;
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
 
