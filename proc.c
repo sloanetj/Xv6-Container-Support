@@ -458,8 +458,10 @@ scheduler(void)
 		else{
 			// get proc by dequeueing from O(1) priority queue
 			p = pq_dequeue();
-			//cprintf("dequeued: %x\n", p);
-			while (p != NULL){
+			if (p != NULL){
+
+				// cprintf("dequeued: %x\n", p);
+
 				// Switch to chosen process. It is the process's job
 				// to release ptable.lock and then reacquire it
 				// before jumping back to us.
@@ -474,10 +476,11 @@ scheduler(void)
 				// It should have changed its p->state before coming back.
 				c->proc = 0;
 
-				p = pq_dequeue();
+				//p = pq_dequeue();
 			}
 		}
 		release(&ptable.lock);
+		// cprintf("--------------------\n");
 	}
 }
 
