@@ -257,7 +257,7 @@ fork(void)
 	np->state = RUNNABLE;
 
 	release(&ptable.lock);
-  cprintf("LMAO HI");
+
 	return pid;
 }
 
