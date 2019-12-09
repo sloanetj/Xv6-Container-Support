@@ -24,10 +24,10 @@ exec(char *path, char **argv)
 	int pg_num;
 	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
 	{
-		*curproc->shmpgs[pg_num]->allocated = 0;
-		*curproc->shmpgs[pg_num]->name = 0;
-		*curproc->shmpgs[pg_num]->pa = 0;
-		*curproc->shmpgs[pg_num]->ref_count = 0;
+		*curproc->shmpgs[pg_num].allocated = 0;
+		*curproc->shmpgs[pg_num].name = 0;
+		*curproc->shmpgs[pg_num].pa = 0;
+		*curproc->shmpgs[pg_num].ref_count = 0;
 	}
 
 	if ((ip = namei(path)) == 0) {
