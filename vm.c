@@ -423,7 +423,7 @@ shmget(char* name)
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
 
-			return (char*)vas;
+			return vas;
 		}
 	}
 
@@ -439,7 +439,7 @@ shmrem(char* name)
 	{
 		return -1;
 	}
-	
+
 	struct shm_pg *pg;
 
 	int pg_num = 0;
