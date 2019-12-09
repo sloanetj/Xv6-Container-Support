@@ -378,6 +378,11 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 char*
 shmget(char* name)
 {
+	if(name == 0)
+	{
+		return NULL;
+	}
+
 	if(shmtable.initialized == 0)
 	{
 		shminit();
@@ -418,7 +423,7 @@ shmget(char* name)
 			myproc()->sz += PGSIZE;
 			myproc()->shmpgs[pg_num] = pg;
 
-			return (char*)vas;
+			return vas;
 		}
 	}
 
@@ -430,10 +435,14 @@ shmget(char* name)
 int
 shmrem(char* name)
 {
+	if(name == 0)
+	{
+		return -1;
+	}
+
 	struct shm_pg *pg;
 
 	int pg_num = 0;
-
 
 	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
 	{

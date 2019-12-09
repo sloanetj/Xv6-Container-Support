@@ -21,6 +21,13 @@ exec(char *path, char **argv)
 
 	begin_op();
 
+  //initialize shared memory array in process
+	int pg_num;
+	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+	{
+		curproc->shmpgs[pg_num] = 0;
+	}
+
 	if ((ip = namei(path)) == 0) {
 		end_op();
 		cprintf("exec: fail\n");

@@ -257,7 +257,7 @@ fork(void)
 	np->state = RUNNABLE;
 
 	release(&ptable.lock);
-
+  cprintf("LMAO HI");
 	return pid;
 }
 
@@ -290,6 +290,19 @@ exit(void)
 
 	// Parent might be sleeping in wait().
 	wakeup1(curproc->parent);
+
+
+	int pg_num;
+	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+	{
+		if(curproc->shmpgs[pg_num] != 0)
+		{
+			deallocuvm(curproc->pgdir, *curproc->shmpgs[pg_num]->pa, *curproc->shmpgs[pg_num]->pa);
+			shmtable.pages[pg_num].ref_count--;
+		}
+	}
+
+
 
 	// Pass abandoned children to init.
 	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
