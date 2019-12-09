@@ -32,7 +32,8 @@ main(void)
     wait();
     shm_rem("test");
 
-    char* shared_memory_address4 shm_get("test2");
+    char* shared_memory_address4 = shm_get("test2");
+
     printf(1, "%d \n", shared_memory_address4);
 
 
