@@ -106,7 +106,8 @@ extern int sys_signalcv(void);
 extern int sys_prio_set(void);
 extern int sys_testpqeq(void);
 extern int sys_testpqdq(void);
-
+extern int sys_shmget(void);
+extern int sys_shmrem(void);
 
 static int (*syscalls[])(void) = {
   [SYS_fork] sys_fork,   [SYS_exit] sys_exit,     [SYS_wait] sys_wait,     [SYS_pipe] sys_pipe,
@@ -117,6 +118,7 @@ static int (*syscalls[])(void) = {
   [SYS_close] sys_close, [SYS_mcreate] sys_mcreate, [SYS_mdelete] sys_mdelete, [SYS_mlock] sys_mlock,
   [SYS_munlock] sys_munlock, [SYS_waitcv] sys_waitcv, [SYS_signalcv] sys_signalcv, [SYS_prio_set] sys_prio_set,
   [SYS_testpqeq] sys_testpqeq, [SYS_testpqdq] sys_testpqdq,
+  [SYS_close] sys_close, [SYS_shmget] sys_shmget, [SYS_shmrem] sys_shmrem,
 };
 
 void

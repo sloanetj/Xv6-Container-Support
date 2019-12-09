@@ -6,12 +6,32 @@
 #include "mmu.h"
 #include "proc.h"
 #include "elf.h"
+#include "shm.h"
 
 extern char data[]; // defined by kernel.ld
 pde_t *     kpgdir; // for use in scheduler()
 
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
+
+
+
+void
+shminit(void)
+{
+	struct shm_pg *pg;
+
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++)
+	{
+		pg->allocated = 0;
+		pg->name = 0;
+		pg->pa = 0;
+		pg->ref_count = 0;
+	}
+
+	shmtable.initialized = 1;
+}
+
 void
 seginit(void)
 {
@@ -352,6 +372,101 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 	}
 	return 0;
 }
+
+
+//Map a 4096 page into the calling process’s virtual address space
+char*
+shmget(char* name)
+{
+	if(name == 0)
+	{
+		return NULL;
+	}
+
+	if(shmtable.initialized == 0)
+	{
+		shminit();
+	}
+
+	struct shm_pg *pg;
+	char* vas = NULL;
+	int pg_num = 0;
+
+	//see if the name already exists in the table
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
+	{
+
+		if(pg->name == name)
+		{
+			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_W | PTE_U);
+			pg->ref_count++;
+			vas = (char*)PGROUNDUP(myproc()->sz);
+			myproc()->sz += PGSIZE;
+			myproc()->shmpgs[pg_num] = pg;
+
+			return vas;
+		}
+	}
+
+	//if name does not exist in table
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
+	{
+		if(pg->name == 0)
+		{
+			pg->name = name;
+			pg->allocated = 1;
+			pg->pa = kalloc();
+			pg->ref_count = 1;
+			memset(pg->pa, 0, PGSIZE);
+			mappages(myproc()->pgdir, (void*)PGROUNDUP(myproc()->sz), PGSIZE, V2P(pg->pa), PTE_W | PTE_U);
+			vas = (char*)PGROUNDUP(myproc()->sz);
+			myproc()->sz += PGSIZE;
+			myproc()->shmpgs[pg_num] = pg;
+
+			return vas;
+		}
+	}
+
+	return NULL;
+}
+
+
+//This removes a mapping of the shared page from the calling process’s virtual address space
+int
+shmrem(char* name)
+{
+	if(name == 0)
+	{
+		return -1;
+	}
+
+	struct shm_pg *pg;
+
+	int pg_num = 0;
+
+	for(pg = shmtable.pages; pg < &shmtable.pages[SHM_MAXNUM]; pg++, pg_num++)
+	{
+
+		if(pg->name == name)
+		{
+			pg->ref_count--;
+
+			if(pg->ref_count == 0)
+			{
+				myproc()->shmpgs[pg_num] = 0;
+				kfree(pg->pa);
+				pg->allocated = 0;
+				pg->pa = 0;
+				pg->name = 0;
+				return pg->ref_count;
+			}
+		}
+	}
+
+
+	return -1;
+}
+
 
 // PAGEBREAK!
 // Blank page.
