@@ -13,6 +13,8 @@ main(void)
     {
       shared_memory_address1 = shm_get("test");
       *shared_memory_address1 = 4;
+      printf(1, "%d \n", shared_memory_address1);
+
       exit();
     }
 
