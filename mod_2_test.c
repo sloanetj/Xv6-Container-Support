@@ -19,6 +19,8 @@ main(void)
     sleep(10);
     char* shared_memory_address2 = shm_get("test");
     printf(1, "%d \n", *shared_memory_address2);
+    printf(1, "%d \n", shared_memory_address2);
+
 
     wait();
     shm_rem("test");
