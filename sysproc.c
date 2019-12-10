@@ -406,19 +406,22 @@ sys_testpqeq(){
 
 	int pid = fork();
 	if (pid == 0){
+		// child
 		for (int i=0; i<10; i++){
-			cprintf("child\n");
+			yield();
+			cprintf("high\n");
 		}
 		exit();
 	}
 	else {
-		sys_prio_set(pid, 2);
+		// parent
+		sys_prio_set(sys_getpid(), 12);
 		for (int i=0; i<10; i++){
-			yield();
-			cprintf("parent\n");
+			cprintf("low\n");
 		}
 	}
-	exit();
+	while(wait() != -1);
+	return;
 
 	// acquire(&ptable.lock);
 	// struct proc *p = myproc();
