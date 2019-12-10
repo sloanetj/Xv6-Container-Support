@@ -403,35 +403,17 @@ sys_prio_set(int pid, int priority){
 void
 sys_testpqeq(){
 
-
-	int pid = fork();
-	if (pid != 0){
-		sys_prio_set(pid, 10);
-		for(int i=0; i<10; i++){
-			yield();
-			cprintf("high\n");
-		}
-	}
-	else {
-		for(int i=0; i<10; i++){
-			cprintf("low\n");
-		}
-		exit();
-	}
-
-	return;
-
-	// acquire(&ptable.lock);
-	// struct proc *p = myproc();
+	acquire(&ptable.lock);
+	struct proc *p = myproc();
 	
-	// int priority = p->priority;
-	// char prio_char = (char)(priority+47);
-	// p->name[0] = prio_char; 
-	// p->name[1] = '\0';
+	int priority = p->priority;
+	char prio_char = (char)(priority+47);
+	p->name[0] = prio_char; 
+	p->name[1] = '\0';
 
-	// // enqueue 
-	// pq_enqueue(p);
-	// release(&ptable.lock);
+	// enqueue 
+	pq_enqueue(p);
+	release(&ptable.lock);
 
 
 
