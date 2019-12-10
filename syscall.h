@@ -29,4 +29,6 @@
 #define SYS_prio_set 28
 #define SYS_testpqeq 29
 #define SYS_testpqdq 30
+#define SYS_shmget 31
+#define SYS_shmrem 32
 

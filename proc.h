@@ -66,6 +66,7 @@ enum procstate
 	ZOMBIE
 };
 
+#define SHM_MAXNUM  32  //max shared memory
 // Per-process state
 // MODIFIED TO INCLUDE MUTEX-REFERECNE TABLE
 struct proc {
@@ -83,7 +84,6 @@ struct proc {
 	struct inode *    cwd;           // Current directory
 	char              name[16];      // Process name (debugging)
 
-
 	/* array indexed by mutex id. If the process has access to a 
 	particular mutex, the pointer at a the corresponding index
 	points to the mutex in the global array. If the process does 
@@ -94,6 +94,7 @@ struct proc {
 	// priority of proccess, range 0-PRIO_MAX
 	uint priority;
 	
+	struct shm_pg*     shmpgs[SHM_MAXNUM];
 
 
 };

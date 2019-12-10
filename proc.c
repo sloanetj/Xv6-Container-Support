@@ -5,6 +5,7 @@
 #include "mmu.h"
 #include "x86.h"
 #include "proc.h"
+#include "shm.h"
 
 // ptable moved to proc.h
 int pq_enqueue(struct proc *p);
@@ -254,6 +255,49 @@ fork(void)
 		np->state  = UNUSED;
 		return -1;
 	}
+
+	//
+	// for(int i = 0; i < SHM_MAXNUM; i++)
+	// {
+	// 	if(curproc->shmpgs[i] != 0)
+	// 	{
+	// 		if((curproc->shmpgs[i] > 0) && (curproc->shmpgs[i]->ref_count < SHM_MAXNUM))
+	// 		{
+	// 			//TODO:
+	//
+	// 			//LMAO
+	// 			/*
+	// 				iterate through shmtable, then like do it again but in the proc, check if proc name equals shmname and shm name is not null, then increase shm ref count++,
+	//
+	// 				for i from 0 to SHM_MAXNUM , np->pshm[i] == currproc->psh[i]
+	// 			*/
+	// 		}
+	// 	}
+	// }
+
+//  copy shared pages into new process address
+
+// struct shm_pg{
+//   uint allocated; //boolean to tell if its allocated alread
+//   char* name;
+//   char*  pa; //pa
+//   //char*  va;  //va
+//   uint ref_count; //tracks how many processes have the shared page mapped into them
+// };
+
+
+	int pg_num;
+	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+	{
+		if(curproc->shmpgs[pg_num] != 0)
+		{
+			np->shmpgs[pg_num]->allocated = curproc->shmpgs[pg_num]->allocated;
+			np->shmpgs[pg_num]->name = curproc->shmpgs[pg_num]->name;
+			np->shmpgs[pg_num]->pa = curproc->shmpgs[pg_num]->pa;
+			np->shmpgs[pg_num]->ref_count = curproc->shmpgs[pg_num]->ref_count;
+		}
+	}
+
 	np->sz     = curproc->sz;
 	np->parent = curproc;
 	*np->tf    = *curproc->tf;
@@ -320,6 +364,19 @@ exit(void)
 
 	// Parent might be sleeping in wait().
 	wakeup1(curproc->parent);
+
+
+	int pg_num;
+	for(pg_num = 0; pg_num < SHM_MAXNUM; pg_num++)
+	{
+		if(curproc->shmpgs[pg_num] != 0)
+		{
+			deallocuvm(curproc->pgdir, *curproc->shmpgs[pg_num]->pa, *curproc->shmpgs[pg_num]->pa);
+			shmtable.pages[pg_num].ref_count--;
+		}
+	}
+
+
 
 	// Pass abandoned children to init.
 	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {

@@ -32,6 +32,8 @@ int   signalcv(int);
 int   prio_set(int, int);
 void  testpqeq(void);
 void  testpqdq(void);
+char *shmget(char*);
+int   shmrem(char*);
 
 // ulib.c
 int   stat(char *, struct stat *);

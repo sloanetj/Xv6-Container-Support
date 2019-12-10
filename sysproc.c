@@ -89,7 +89,6 @@ sys_uptime(void)
 	return xticks;
 }
 
-
 /* Iterate throught the global array of mutexes.
 find the index of the first 'empty mutex' 
 (mutex is available), set mutex fields, initialize 
@@ -444,4 +443,22 @@ sys_testpqdq(){
 	}
 	
 	
+}
+
+char*
+sys_shmget(void)
+{
+	char* name;
+	if(argptr(0, (void *)&name, sizeof(*name)) < 0) return "failed";
+
+	return shmget(name);
+}
+
+int
+sys_shmrem(void)
+{
+	char* name;
+	if(argptr(0, (void *)&name, sizeof(*name)) < 0) return -1;
+
+	return shmrem(name);
 }
