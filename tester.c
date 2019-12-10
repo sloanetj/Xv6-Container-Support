@@ -83,51 +83,57 @@ pq_dequeue(){
 
 int main(){
 
-	int mux_id = mutex_create("mymux");
-	if (fork() == 0){
-		mutex_lock(mux_id);
-		printf(1, "child: about to exit while holding lock\n");
-		exit();
-	}
-	else{
-		wait();
-		if (!mutex_lock(mux_id)){
-			printf(1,"parent: can't take the lock\n");
-		}
-		else {
-			printf(1,"parent: was able to take the lock\n");
-			mutex_unlock(mux_id);
-		}
-	}
 
-	// test cv's
-	int muxid = mutex_create("cv test");
-	if (fork() == 0){
-		
-		if (!mutex_lock(muxid)){
-			printf(1,"SIGNAL LOCK FAILURE\n");
-			exit();
-		}
-		while (!cv_signal(muxid)){
-		}
-		if (!mutex_unlock(muxid)){
-			printf(1,"SIGNAL UNLOCK FAILURE\n");
-			exit();
-		}
-		exit();
-	}
-	if (!mutex_lock(muxid)){
-		printf(1,"LOCK FAILURE\n");
-		exit();
-	}
-	if (!cv_wait(muxid)){
-		printf(1,"CV WAIT FAILURE\n");
-		exit();
-	}
-	wait();
-	printf(1,"CV SUCCESS\n");
+	testpqeq();
 
+
+	
 	exit();
+
+
+	// int mux_id = mutex_create("mymux");
+	// if (fork() == 0){
+	// 	mutex_lock(mux_id);
+	// 	printf(1, "child: about to exit while holding lock\n");
+	// 	exit();
+	// }
+	// else{
+	// 	wait();
+	// 	if (!mutex_lock(mux_id)){
+	// 		printf(1,"parent: can't take the lock\n");
+	// 	}
+	// 	else {
+	// 		printf(1,"parent: was able to take the lock\n");
+	// 		mutex_unlock(mux_id);
+	// 	}
+	// }
+
+	// //test cv's
+	// int muxid = mutex_create("cv test");
+	// if (fork() == 0){
+		
+	// 	if (!mutex_lock(muxid)){
+	// 		printf(1,"SIGNAL LOCK FAILURE\n");
+	// 		exit();
+	// 	}
+	// 	while (!cv_signal(muxid)){
+	// 	}
+	// 	if (!mutex_unlock(muxid)){
+	// 		printf(1,"SIGNAL UNLOCK FAILURE\n");
+	// 		exit();
+	// 	}
+	// 	exit();
+	// }
+	// if (!mutex_lock(muxid)){
+	// 	printf(1,"LOCK FAILURE\n");
+	// 	exit();
+	// }
+	// if (!cv_wait(muxid)){
+	// 	printf(1,"CV WAIT FAILURE\n");
+	// 	exit();
+	// }
+	// wait();
+	// printf(1,"CV SUCCESS\n");
 
 
 	// struct myproc *p0 = (struct myproc*)malloc(sizeof(struct myproc));
@@ -159,7 +165,7 @@ int main(){
 	// }
 
 
-	// TEST SET PRIORITY
+	// // TEST SET PRIORITY
 
 	// //set my priority to a lower value - should work
 	// if (prio_set(getpid(), 10) > 0){
